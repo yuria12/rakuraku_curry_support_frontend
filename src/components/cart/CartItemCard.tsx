@@ -43,11 +43,6 @@ export function CartItemCard({ item }: CartItemCardProps) {
             <dd>{item.toppings.length}個</dd>
           </div>
         </dl>
-        <ul>
-          {item.toppings.map((topping) => (
-            <li key={topping.id}>{topping.name}</li>
-          ))}
-        </ul>
       </div>
 
       <div className="cart-item-card__prices">

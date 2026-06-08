@@ -618,13 +618,6 @@ p {
   margin: 0;
 }
 
-.cart-item-card__details ul {
-  margin: -0.4rem 0 0 0;
-  padding-left: 5.8rem;
-  list-style: none;
-  font-size: 0.9rem;
-}
-
 .cart-item-card__prices {
   display: grid;
   gap: 1rem;
@@ -769,10 +762,6 @@ p {
   .cart-item-card__prices,
   .cart-item-card__actions {
     grid-column: auto;
-  }
-
-  .cart-item-card__details ul {
-    padding-left: 1rem;
   }
 
   .cart-summary .button {
