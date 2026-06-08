@@ -337,6 +337,93 @@ p {
   font-weight: 500;
 }
 
+.products-page {
+  display: grid;
+  gap: clamp(2rem, 6vw, 4.5rem);
+}
+
+.breadcrumb {
+  margin: 0;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+}
+
+.product-search {
+  width: min(100%, 39rem);
+  margin-inline: auto;
+}
+
+.product-search fieldset {
+  margin: 0;
+  border: 2px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: clamp(1.5rem, 4vw, 2.8rem) clamp(1rem, 5vw, 4rem);
+}
+
+.product-search legend {
+  padding-inline: 0.6rem;
+  font-size: 1rem;
+}
+
+.product-search__body {
+  display: grid;
+  grid-template-columns: max-content minmax(12rem, 1fr) max-content max-content;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.product-search__body label {
+  font-size: clamp(1.25rem, 3vw, 1.7rem);
+  line-height: 1.2;
+}
+
+.product-search__body input {
+  width: 100%;
+  min-height: 2.25rem;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: #d9d9d9;
+  padding: 0.3rem 0.75rem;
+  font-size: 1rem;
+}
+
+.product-list-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.product-card {
+  display: grid;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.product-card__image-link {
+  display: block;
+}
+
+.product-card__name {
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
+}
+
+.product-card__name:hover,
+.product-card__name:focus-visible {
+  text-decoration: underline;
+}
+
+.product-card__prices {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.product-card__prices span {
+  display: inline-block;
+  min-width: 1.4rem;
+}
+
 @media (max-width: 820px) {
   .app-header__inner {
     align-items: flex-start;
@@ -356,6 +443,19 @@ p {
   .product-preview-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .product-search__body {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .product-search__body label,
+  .product-search__body input {
+    grid-column: 1 / -1;
+  }
+
+  .product-list-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 620px) {
@@ -369,5 +469,18 @@ p {
 
   .product-preview-grid {
     grid-template-columns: 1fr;
+  }
+
+  .products-page {
+    gap: 2.25rem;
+  }
+
+  .product-search__body,
+  .product-list-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-search__body .button {
+    width: 100%;
   }
 }
