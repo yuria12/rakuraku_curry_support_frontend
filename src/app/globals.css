@@ -424,21 +424,6 @@ p {
   min-width: 1.4rem;
 }
 
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  font-size: clamp(2rem, 5vw, 2.5rem);
-  line-height: 1;
-}
-
-.pagination a,
-.pagination span {
-  min-width: 1.6rem;
-  text-align: center;
-}
-
 @media (max-width: 820px) {
   .app-header__inner {
     align-items: flex-start;

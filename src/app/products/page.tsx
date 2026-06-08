@@ -2,8 +2,6 @@ import { Button } from "@/components/common/Button";
 import { ProductCard } from "@/components/product/ProductCard";
 import { mockProducts } from "@/mocks/products";
 
-const visibleProducts = mockProducts.slice(0, 4);
-
 export default function ProductsPage() {
   return (
     <section className="products-page">
@@ -26,20 +24,10 @@ export default function ProductsPage() {
       </form>
 
       <div className="product-list-grid" aria-label="商品一覧">
-        {visibleProducts.map((product) => (
+        {mockProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
-
-      <nav className="pagination" aria-label="ページネーション">
-        <a aria-label="前のページ" href="/products">
-          ◀
-        </a>
-        <span aria-current="page">1</span>
-        <a aria-label="次のページ" href="/products">
-          ▶
-        </a>
-      </nav>
     </section>
   );
 }
