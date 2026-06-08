@@ -1,26 +1,35 @@
 import Link from "next/link";
+import { SiteLogo } from "@/components/layout/SiteLogo";
 
 type AppShellProps = Readonly<{
   children: React.ReactNode;
 }>;
+
+const navItems = [
+  { href: "/products", label: "商品一覧" },
+  { href: "/cart", label: "カート" },
+  { href: "/orders", label: "注文履歴" },
+  { href: "/login", label: "ログイン" },
+];
 
 export function AppShell({ children }: AppShellProps) {
   return (
     <div className="app-shell">
       <header className="app-header">
         <div className="app-header__inner">
-          <Link className="app-logo" href="/">
-            <strong>らくらくカレーサポート</strong>
-            <span>Cooking support frontend</span>
+          <Link className="app-logo-link" href="/" aria-label="トップページへ戻る">
+            <SiteLogo />
           </Link>
+          <nav className="app-nav" aria-label="メインナビゲーション">
+            {navItems.map((item) => (
+              <Link className="app-nav__link" href={item.href} key={item.href}>
+                {item.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </header>
       <main className="app-main">{children}</main>
-      <footer className="app-footer">
-        <div className="app-footer__inner">
-          <span>rakuraku_curry_support_frontend</span>
-        </div>
-      </footer>
     </div>
   );
 }

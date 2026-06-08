@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "らくらくカレーサポート",
-  description: "カレー調理支援アプリケーションのフロントエンド",
+  title: "ラクラクカリー",
+  description: "ラクラクカリーのフロントエンド",
 };
 
 export default function RootLayout({
