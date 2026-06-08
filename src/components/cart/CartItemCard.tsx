@@ -28,26 +28,32 @@ export function CartItemCard({ item }: CartItemCardProps) {
   return (
     <article className="cart-item-card">
       <div className="cart-item-card__image">
-        <ProductImage alt={item.product.name} src={item.product.imagePath} />
+        <ProductImage
+          alt={item.product.name}
+          src={item.product.imagePath}
+        />
       </div>
 
       <div className="cart-item-card__details">
         <h2>{item.product.name}</h2>
+
         <dl>
-          <div>
+          <div className="cart-item-card__row">
             <dt>サイズ：</dt>
             <dd>{item.size}</dd>
+            <dd className="cart-item-card__price">
+              ¥{itemPrice.toLocaleString()}
+            </dd>
           </div>
-          <div>
+
+          <div className="cart-item-card__row">
             <dt>トッピング：</dt>
             <dd>{item.toppings.length}個</dd>
+            <dd className="cart-item-card__price">
+              ¥{toppingPrice.toLocaleString()}
+            </dd>
           </div>
         </dl>
-      </div>
-
-      <div className="cart-item-card__prices">
-        <p>¥{itemPrice.toLocaleString()}</p>
-        <p>¥{toppingPrice.toLocaleString()}</p>
       </div>
 
       <div className="cart-item-card__actions">
