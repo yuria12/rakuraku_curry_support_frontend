@@ -9,7 +9,10 @@ export default function RegisterPage() {
       actionHref="/login"
       actionLabel="ログインする"
       actionText="アカウントをお持ちの方はこちら"
-      breadcrumb="トップ&gt;会員登録"
+      breadcrumbItems={[
+        { href: "/", label: "トップ" },
+        { label: "会員登録" },
+      ]}
       title="会員登録"
     >
       <form className="auth-form auth-form--register">

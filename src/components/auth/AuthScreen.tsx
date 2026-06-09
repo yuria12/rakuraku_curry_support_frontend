@@ -1,11 +1,15 @@
 import type { ReactNode } from "react";
 import { ButtonLink } from "@/components/common/Button";
+import {
+  Breadcrumb,
+  type BreadcrumbItem,
+} from "@/components/common/Breadcrumb";
 
 type AuthScreenProps = Readonly<{
   actionHref: string;
   actionLabel: string;
   actionText: string;
-  breadcrumb: string;
+  breadcrumbItems: BreadcrumbItem[];
   children: ReactNode;
   title: string;
 }>;
@@ -14,13 +18,13 @@ export function AuthScreen({
   actionHref,
   actionLabel,
   actionText,
-  breadcrumb,
+  breadcrumbItems,
   children,
   title,
 }: AuthScreenProps) {
   return (
     <section className="auth-page">
-      <p className="breadcrumb">{breadcrumb}</p>
+      <Breadcrumb items={breadcrumbItems} />
 
       <div className="auth-panel">
         <h1>{title}</h1>

@@ -314,6 +314,24 @@ p {
   font-size: clamp(0.95rem, 2vw, 1.05rem);
 }
 
+.breadcrumb__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumb__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumb__item + .breadcrumb__item::before {
+  content: ">";
+}
+
 .product-search {
   width: min(100%, 39rem);
   margin-inline: auto;

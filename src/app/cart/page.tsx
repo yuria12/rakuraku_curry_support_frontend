@@ -1,4 +1,5 @@
 import { ButtonLink } from "@/components/common/Button";
+import { Breadcrumb } from "@/components/common/Breadcrumb";
 import {
   CartItemCard,
   getCartItemSubtotal,
@@ -15,7 +16,12 @@ const orderTotal = productsTotal + shippingFee;
 export default function CartPage() {
   return (
     <section className="cart-page">
-      <p className="breadcrumb">トップ&gt;カート</p>
+      <Breadcrumb
+        items={[
+          { href: "/", label: "トップ" },
+          { label: "カート" },
+        ]}
+      />
       <h1>カート（{mockCartItems.length}件）</h1>
 
       <div className="cart-list" aria-label="カート商品一覧">

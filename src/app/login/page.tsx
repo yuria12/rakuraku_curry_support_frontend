@@ -9,7 +9,10 @@ export default function LoginPage() {
       actionHref="/register"
       actionLabel="会員登録する"
       actionText="初めての方はこちら"
-      breadcrumb="トップ&gt;ログイン"
+      breadcrumbItems={[
+        { href: "/", label: "トップ" },
+        { label: "ログイン" },
+      ]}
       title="2段階認証"
     >
       <form className="auth-form" action="/api/login" method="post">

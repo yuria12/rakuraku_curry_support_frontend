@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Button } from "@/components/common/Button";
+import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { ProductImage } from "@/components/common/ProductImage";
 import { QuantityStepper } from "@/components/common/QuantityStepper";
 import { mockProducts } from "@/mocks/products";
@@ -38,7 +39,13 @@ export default async function ProductDetailPage({
 
   return (
     <section className="product-detail-page">
-      <p className="breadcrumb">トップ&gt;商品一覧&gt;商品詳細</p>
+      <Breadcrumb
+        items={[
+          { href: "/", label: "トップ" },
+          { href: "/products", label: "商品一覧" },
+          { label: "商品詳細" },
+        ]}
+      />
 
       <div className="product-detail">
         <div className="product-detail__summary">
