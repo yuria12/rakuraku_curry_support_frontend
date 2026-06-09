@@ -30,14 +30,23 @@ export const mockOrders: OrderHistory[] = [
         product: mockProducts[4],
         quantity: 2,
         size: "L",
-        subtotal: (mockProducts[4].priceL + mockToppings[0].priceL) * 2,
-        toppings: [mockToppings[0]],
+        subtotal:
+          (mockProducts[4].priceL +
+            mockToppings[0].priceL +
+            mockToppings[1].priceL +
+            mockToppings[2].priceL) *
+          2,
+        toppings: [mockToppings[0], mockToppings[1], mockToppings[2]],
       },
     ],
     totalPrice:
       mockProducts[0].priceM +
       mockToppings[3].priceM +
-      (mockProducts[4].priceL + mockToppings[0].priceL) * 2,
+      (mockProducts[4].priceL +
+        mockToppings[0].priceL +
+        mockToppings[1].priceL +
+        mockToppings[2].priceL) *
+        2,
   },
   {
     customer: {

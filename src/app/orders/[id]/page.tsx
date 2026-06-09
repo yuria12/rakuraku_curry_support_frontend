@@ -95,35 +95,24 @@ export default async function OrderDetailPage({
                   src={item.product.imagePath}
                 />
               </div>
-              <h2>{item.product.name}</h2>
-              <dl className="order-detail-item__details">
-                <div>
-                  <dt>サイズ：</dt>
-                  <dd>{item.size}</dd>
-                </div>
-                <div>
-                  <dt>個数：</dt>
-                  <dd>{item.quantity}個</dd>
-                </div>
-              </dl>
-              <div className="order-detail-item__toppings">
-                <p>トッピング</p>
-                {item.toppings.length > 0 ? (
-                  <ul>
-                    {item.toppings.map((topping) => (
-                      <li key={topping.id}>{topping.name}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <span>なし</span>
-                )}
+              <h2 className="order-detail-item__name">{item.product.name}</h2>
+              <div className="order-detail-item__details">
+                <p>
+                  サイズ：<strong>{item.size}</strong>
+                </p>
+                <p>
+                  個数：<strong>{item.quantity}個</strong>
+                </p>
+                <p className="order-detail-item__toppings">
+                  トッピング：
+                  {item.toppings.length > 0
+                    ? item.toppings.map((topping) => topping.name).join("、")
+                    : "なし"}
+                </p>
               </div>
-              <dl className="order-detail-item__subtotal">
-                <div>
-                  <dt>小計：</dt>
-                  <dd>¥{item.subtotal.toLocaleString()}</dd>
-                </div>
-              </dl>
+              <p className="order-detail-item__subtotal">
+                小計：¥{item.subtotal.toLocaleString()}
+              </p>
             </article>
           ))}
         </div>
