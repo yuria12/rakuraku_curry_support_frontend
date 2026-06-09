@@ -190,8 +190,8 @@
 
 .order-detail-item {
   display: grid;
-  grid-template-columns: 7rem minmax(0, 1fr) minmax(7rem, 0.65fr) minmax(8rem, 0.75fr) minmax(8rem, 0.55fr);
-  gap: clamp(1rem, 4vw, 2rem);
+  grid-template-columns: 7rem minmax(10rem, 1fr) minmax(9rem, 0.9fr) max-content;
+  gap: clamp(1rem, 4vw, 2.5rem);
   align-items: center;
   padding-block: 1rem;
 }
@@ -204,54 +204,38 @@
   aspect-ratio: 1 / 0.78;
 }
 
-.order-detail-item h2,
+.order-detail-item__name,
 .order-detail-item__details,
-.order-detail-item__toppings,
 .order-detail-item__subtotal {
   margin: 0;
 }
 
-.order-detail-item h2 {
+.order-detail-item__name {
   font-size: clamp(1rem, 2vw, 1.1rem);
   font-weight: 600;
 }
 
-.order-detail-item__details,
-.order-detail-item__toppings,
-.order-detail-item__subtotal {
+.order-detail-item__details {
   display: grid;
   gap: 0.35rem;
 }
 
-.order-detail-item__details div,
-.order-detail-item__subtotal div {
-  display: flex;
-  gap: 0.15rem;
-}
-
-.order-detail-item__details dt,
-.order-detail-item__details dd,
-.order-detail-item__subtotal dt,
-.order-detail-item__subtotal dd {
+.order-detail-item__details p {
   margin: 0;
 }
 
-.order-detail-item__toppings p {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
+.order-detail-item__details strong {
+  font-weight: 600;
 }
 
-.order-detail-item__toppings ul {
-  display: grid;
-  gap: 0.2rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.order-detail-item__toppings {
+  font-size: 0.85rem;
 }
 
-.order-detail-item__toppings li::before {
-  content: "・";
+.order-detail-item__subtotal {
+  line-height: 1.7;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .order-detail-info {
@@ -306,9 +290,8 @@
       grid-template-columns: 7rem minmax(0, 1fr);
     }
 
-    .order-detail-item h2,
+    .order-detail-item__name,
     .order-detail-item__details,
-    .order-detail-item__toppings,
     .order-detail-item__subtotal {
       grid-column: 2;
     }
@@ -341,9 +324,8 @@
     }
 
     .order-detail-card__header .button,
-    .order-detail-item h2,
+    .order-detail-item__name,
     .order-detail-item__details,
-    .order-detail-item__toppings,
     .order-detail-item__subtotal {
       grid-column: auto;
       grid-row: auto;
