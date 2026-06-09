@@ -1,11 +1,17 @@
 import { Button } from "@/components/common/Button";
+import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { ProductCard } from "@/components/product/ProductCard";
 import { mockProducts } from "@/mocks/products";
 
 export default function ProductsPage() {
   return (
     <section className="products-page">
-      <p className="breadcrumb">トップ&gt;商品一覧</p>
+      <Breadcrumb
+        items={[
+          { href: "/", label: "トップ" },
+          { label: "商品一覧" },
+        ]}
+      />
 
       <form className="product-search" role="search">
         <fieldset>

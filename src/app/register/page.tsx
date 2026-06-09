@@ -3,20 +3,26 @@ import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { PasswordInput } from "@/components/common/PasswordInput";
 import { TextInput } from "@/components/common/TextInput";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   return (
     <section className="auth-page">
       <Breadcrumb
         items={[
           { href: "/", label: "トップ" },
-          { label: "ログイン" },
+          { label: "会員登録" },
         ]}
       />
 
       <div className="auth-panel">
-        <h1>2段階認証</h1>
+        <h1>会員登録</h1>
 
-        <form className="auth-form" action="/api/login" method="post">
+        <form className="auth-form auth-form--register">
+          <TextInput
+            autoComplete="name"
+            id="name"
+            label="お名前："
+            name="name"
+          />
           <TextInput
             autoComplete="email"
             id="email"
@@ -25,12 +31,18 @@ export default function LoginPage() {
             type="email"
           />
           <PasswordInput
-            autoComplete="current-password"
+            autoComplete="new-password"
             id="password"
             label="パスワード："
             name="password"
           />
-          <Button type="submit">ログインする</Button>
+          <PasswordInput
+            autoComplete="new-password"
+            id="password-confirmation"
+            label="パスワード確認："
+            name="passwordConfirmation"
+          />
+          <Button type="submit">登録する</Button>
         </form>
 
         <div className="auth-divider">
@@ -38,9 +50,9 @@ export default function LoginPage() {
         </div>
 
         <div className="auth-action">
-          <p>初めての方はこちら</p>
-          <ButtonLink href="/register" size="sm" variant="secondary">
-            会員登録する
+          <p>アカウントをお持ちの方はこちら</p>
+          <ButtonLink href="/login" size="sm" variant="secondary">
+            ログインする
           </ButtonLink>
         </div>
       </div>
