@@ -729,104 +729,6 @@ p {
   margin: 0;
 }
 
-.auth-decorations {
-  width: min(100%, 760px);
-  margin-inline: auto;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(1.25rem, 7vw, 5rem);
-  align-items: end;
-}
-
-.auth-decoration {
-  min-height: clamp(3rem, 8vw, 5rem);
-  position: relative;
-  display: block;
-}
-
-.auth-decoration::before,
-.auth-decoration::after {
-  position: absolute;
-  content: "";
-  border-radius: 999px;
-}
-
-.auth-decoration--chili::before {
-  width: 3.7rem;
-  height: 1rem;
-  left: 0.4rem;
-  bottom: 1.2rem;
-  background: #f15b2a;
-  transform: rotate(36deg);
-}
-
-.auth-decoration--chili::after {
-  width: 0.45rem;
-  height: 1.5rem;
-  left: 0.3rem;
-  bottom: 2.1rem;
-  background: #7a9d42;
-  transform: rotate(-28deg);
-}
-
-.auth-decoration--spice::before {
-  width: 3.4rem;
-  height: 3.4rem;
-  left: 50%;
-  bottom: 0.8rem;
-  border: 0.55rem solid #9d5b28;
-  transform: translateX(-50%) rotate(24deg);
-  background: transparent;
-}
-
-.auth-decoration--spice::after {
-  width: 1.3rem;
-  height: 1.3rem;
-  left: calc(50% + 1.6rem);
-  bottom: 0.9rem;
-  background: #7a9d42;
-}
-
-.auth-decoration--curry::before {
-  width: 4.5rem;
-  height: 2.7rem;
-  left: 50%;
-  bottom: 1rem;
-  border: 0.18rem solid #f2d7b4;
-  background: #fff5e7;
-  transform: translateX(-50%);
-}
-
-.auth-decoration--curry::after {
-  width: 2.5rem;
-  height: 1.2rem;
-  left: 50%;
-  bottom: 1.75rem;
-  background: #d58336;
-  box-shadow:
-    0.8rem 0.25rem #d58336,
-    -0.7rem 0.35rem #d58336;
-  transform: translateX(-50%);
-}
-
-.auth-decoration--cutlery::before,
-.auth-decoration--cutlery::after {
-  width: 0.35rem;
-  height: 4rem;
-  bottom: 0.6rem;
-  background: #b98a5f;
-}
-
-.auth-decoration--cutlery::before {
-  left: 45%;
-  transform: rotate(28deg);
-}
-
-.auth-decoration--cutlery::after {
-  left: 55%;
-  transform: rotate(-28deg);
-}
-
 @media (max-width: 820px) {
   .app-header__inner {
     align-items: flex-start;
@@ -888,9 +790,6 @@ p {
     justify-items: center;
   }
 
-  .auth-decorations {
-    gap: 1.25rem;
-  }
 }
 
 @media (max-width: 620px) {
@@ -955,13 +854,4 @@ p {
     width: 100%;
   }
 
-  .auth-decorations {
-    width: min(100%, 22rem);
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.5rem;
-  }
-
-  .auth-decoration {
-    min-width: 0;
-  }
 }

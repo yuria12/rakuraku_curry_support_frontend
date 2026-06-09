@@ -1,4 +1,3 @@
-import { AuthDecorationStrip } from "@/components/auth/AuthDecorationStrip";
 import { Button, ButtonLink } from "@/components/common/Button";
 import { PasswordInput } from "@/components/common/PasswordInput";
 import { TextInput } from "@/components/common/TextInput";
@@ -37,8 +36,6 @@ export default function LoginPage() {
           </ButtonLink>
         </div>
       </div>
-
-      <AuthDecorationStrip />
     </section>
   );
 }
