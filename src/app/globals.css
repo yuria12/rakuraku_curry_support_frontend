@@ -70,9 +70,10 @@ select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: min(100%, var(--container-max));
+  width: 100%;
   margin-inline: auto;
-  padding-inline: var(--space-page-inline);
+  padding-inline: clamp(1.5rem, 6vw, 4rem);
+  padding-inline-start: clamp(0.75rem, 3vw, 2rem);
   gap: 1rem;
 }
 
@@ -85,51 +86,16 @@ select {
 .site-logo {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  color: #e73f18;
-  font-weight: 800;
-  line-height: 1;
+  width: clamp(12rem, 22vw, 17rem);
+  height: calc(var(--header-height) - 0.35rem);
+  overflow: hidden;
 }
 
-.site-logo__mark {
-  position: relative;
-  width: 2rem;
-  height: 1.2rem;
-  border-radius: 999px;
-  background: linear-gradient(90deg, #f25a24, #ff9d3d);
-  transform: rotate(24deg);
-}
-
-.site-logo__mark::before,
-.site-logo__mark::after {
-  position: absolute;
-  content: "";
-  border-radius: 999px;
-  background: #7a9d42;
-}
-
-.site-logo__mark::before {
-  width: 0.5rem;
-  height: 0.18rem;
-  left: -0.32rem;
-  top: 0.1rem;
-  transform: rotate(-42deg);
-}
-
-.site-logo__mark::after {
-  width: 0.26rem;
-  height: 0.26rem;
-  right: -0.38rem;
-  top: 0;
-  box-shadow:
-    0.42rem 0.18rem #f49359,
-    0.72rem -0.12rem #f49359,
-    1rem 0.16rem #e73f18;
-}
-
-.site-logo__text {
-  font-size: clamp(1rem, 2vw, 1.35rem);
-  letter-spacing: 0;
+.site-logo__image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
 }
 
 .app-nav {
@@ -668,13 +634,13 @@ p {
   min-height: calc(100vh - var(--header-height) - var(--space-section) * 2);
   display: grid;
   align-content: start;
-  gap: clamp(3rem, 8vw, 5rem);
+  gap: clamp(1.25rem, 4vw, 2.25rem);
 }
 
 .auth-panel {
   width: min(100%, 50rem);
   margin-inline: auto;
-  margin-block-start: clamp(1.5rem, 5vw, 4rem);
+  margin-block-start: clamp(0.5rem, 2vw, 1.25rem);
   display: grid;
   justify-items: center;
   gap: clamp(1.5rem, 4vw, 2rem);
