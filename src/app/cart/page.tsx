@@ -1,9 +1,9 @@
 import { ButtonLink } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import {
-  CartItemCard,
+  CartItemSummary,
   getCartItemSubtotal,
-} from "@/components/cart/CartItemCard";
+} from "@/components/cart/CartItemSummary";
 import { mockCartItems } from "@/mocks/cart";
 
 const shippingFee = 500;
@@ -26,7 +26,12 @@ export default function CartPage() {
 
       <div className="cart-list" aria-label="カート商品一覧">
         {mockCartItems.map((item) => (
-          <CartItemCard item={item} key={item.id} />
+          <CartItemSummary
+            headingLevel="h2"
+            item={item}
+            key={item.id}
+            showActions
+          />
         ))}
       </div>
 
