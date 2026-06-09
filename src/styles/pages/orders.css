@@ -120,6 +120,168 @@
   justify-content: center;
 }
 
+.order-detail-page {
+  display: grid;
+  gap: clamp(1.25rem, 3vw, 2rem);
+}
+
+.order-detail-page__header {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.order-detail-page__header h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.2rem);
+  font-weight: 500;
+}
+
+.order-detail-page__header p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.order-detail-card,
+.order-detail-info {
+  width: min(100%, 840px);
+  margin-inline: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: clamp(1rem, 4vw, 1.75rem) clamp(1rem, 4vw, 2rem);
+  background: var(--color-surface);
+}
+
+.order-detail-card {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.order-detail-card__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content max-content;
+  gap: 1rem;
+  align-items: center;
+  border-bottom: 1px solid var(--color-border);
+  padding-block-end: 1rem;
+}
+
+.order-detail-card__header p {
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+}
+
+.order-detail-card__header strong {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+}
+
+.order-detail-card__section-title,
+.order-detail-info h2 {
+  margin: 0;
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  font-weight: 600;
+}
+
+.order-detail-items {
+  display: grid;
+}
+
+.order-detail-item {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr) minmax(7rem, 0.65fr) minmax(8rem, 0.75fr) minmax(8rem, 0.55fr);
+  gap: clamp(1rem, 4vw, 2rem);
+  align-items: center;
+  padding-block: 1rem;
+}
+
+.order-detail-item + .order-detail-item {
+  border-top: 1px solid var(--color-border);
+}
+
+.order-detail-item__image .product-image-frame {
+  aspect-ratio: 1 / 0.78;
+}
+
+.order-detail-item h2,
+.order-detail-item__details,
+.order-detail-item__toppings,
+.order-detail-item__subtotal {
+  margin: 0;
+}
+
+.order-detail-item h2 {
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  font-weight: 600;
+}
+
+.order-detail-item__details,
+.order-detail-item__toppings,
+.order-detail-item__subtotal {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.order-detail-item__details div,
+.order-detail-item__subtotal div {
+  display: flex;
+  gap: 0.15rem;
+}
+
+.order-detail-item__details dt,
+.order-detail-item__details dd,
+.order-detail-item__subtotal dt,
+.order-detail-item__subtotal dd {
+  margin: 0;
+}
+
+.order-detail-item__toppings p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+.order-detail-item__toppings ul {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order-detail-item__toppings li::before {
+  content: "・";
+}
+
+.order-detail-info {
+  display: grid;
+  gap: 1rem;
+}
+
+.order-detail-info__list {
+  display: grid;
+  margin: 0;
+  border-top: 1px solid #e6e6e6;
+}
+
+.order-detail-info__list div {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.45fr) minmax(0, 1fr);
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.order-detail-info__list dt,
+.order-detail-info__list dd {
+  margin: 0;
+  padding: 0.75rem 1rem;
+}
+
+.order-detail-info__list dt {
+  background: #f7f7f7;
+  font-weight: 600;
+}
+
 @media (max-width: 820px) {
     .order-history-item {
       grid-template-columns: 7rem minmax(0, 1fr);
@@ -128,6 +290,26 @@
     .order-history-item__name,
     .order-history-item__details,
     .order-history-item__subtotal {
+      grid-column: 2;
+    }
+
+    .order-detail-card__header {
+      grid-template-columns: 1fr max-content;
+    }
+
+    .order-detail-card__header .button {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+    }
+
+    .order-detail-item {
+      grid-template-columns: 7rem minmax(0, 1fr);
+    }
+
+    .order-detail-item h2,
+    .order-detail-item__details,
+    .order-detail-item__toppings,
+    .order-detail-item__subtotal {
       grid-column: 2;
     }
 }
@@ -150,5 +332,28 @@
 
     .orders-page__footer .button {
       width: 100%;
+    }
+
+    .order-detail-card__header,
+    .order-detail-item,
+    .order-detail-info__list div {
+      grid-template-columns: 1fr;
+    }
+
+    .order-detail-card__header .button,
+    .order-detail-item h2,
+    .order-detail-item__details,
+    .order-detail-item__toppings,
+    .order-detail-item__subtotal {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+    .order-detail-card__header .button {
+      width: 100%;
+    }
+
+    .order-detail-info__list dd {
+      padding-block-start: 0;
     }
 }
