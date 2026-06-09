@@ -2,7 +2,7 @@ import {
   CartItemSummary,
   getCartItemSubtotal,
 } from "@/components/cart/CartItemSummary";
-import { Button, ButtonLink } from "@/components/common/Button";
+import { ButtonLink } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { TextInput } from "@/components/common/TextInput";
 import { mockCartItems } from "@/mocks/cart";
@@ -113,7 +113,7 @@ export default function OrderConfirmPage() {
           <ButtonLink href="/cart" variant="secondary">
             カートに戻る
           </ButtonLink>
-          <Button type="button">注文を確定する</Button>
+          <ButtonLink href="/orders/complete">注文を確定する</ButtonLink>
         </div>
       </section>
     </section>
