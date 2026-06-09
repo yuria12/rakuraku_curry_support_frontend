@@ -392,6 +392,7 @@ p {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(2rem, 6vw, 5rem);
   align-items: start;
+  margin-block-start: clamp(1rem, 3vw, 2rem);
 }
 
 .product-card {
@@ -666,13 +667,14 @@ p {
 .auth-page {
   min-height: calc(100vh - var(--header-height) - var(--space-section) * 2);
   display: grid;
-  align-content: center;
+  align-content: start;
   gap: clamp(3rem, 8vw, 5rem);
 }
 
 .auth-panel {
   width: min(100%, 50rem);
   margin-inline: auto;
+  margin-block-start: clamp(1.5rem, 5vw, 4rem);
   display: grid;
   justify-items: center;
   gap: clamp(1.5rem, 4vw, 2rem);

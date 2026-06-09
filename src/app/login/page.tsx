@@ -5,6 +5,8 @@ import { TextInput } from "@/components/common/TextInput";
 export default function LoginPage() {
   return (
     <section className="auth-page">
+      <p className="breadcrumb">トップ&gt;ログイン</p>
+
       <div className="auth-panel">
         <h1>2段階認証</h1>
 
