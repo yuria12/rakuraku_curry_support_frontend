@@ -157,7 +157,7 @@ select {
   flex: 1;
   width: min(100%, var(--container-max));
   margin-inline: auto;
-  padding: var(--space-section) var(--space-page-inline);
+  padding: clamp(1.25rem, 3vw, 2rem) var(--space-page-inline) var(--space-section);
 }
 
 .button {
@@ -340,7 +340,7 @@ p {
 
 .products-page {
   display: grid;
-  gap: clamp(2rem, 6vw, 4.5rem);
+  gap: clamp(1.25rem, 4vw, 2.75rem);
 }
 
 .breadcrumb {
@@ -392,6 +392,7 @@ p {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(2rem, 6vw, 5rem);
   align-items: start;
+  margin-block-start: clamp(1rem, 3vw, 2rem);
 }
 
 .product-card {
@@ -427,7 +428,7 @@ p {
 
 .product-detail-page {
   display: grid;
-  gap: clamp(2rem, 5vw, 3.25rem);
+  gap: clamp(1.25rem, 4vw, 2.25rem);
 }
 
 .product-detail {
@@ -549,7 +550,7 @@ p {
 
 .cart-page {
   display: grid;
-  gap: clamp(1.5rem, 4vw, 2.5rem);
+  gap: clamp(1.25rem, 3vw, 2rem);
 }
 
 .cart-page h1 {
@@ -666,13 +667,14 @@ p {
 .auth-page {
   min-height: calc(100vh - var(--header-height) - var(--space-section) * 2);
   display: grid;
-  align-content: center;
+  align-content: start;
   gap: clamp(3rem, 8vw, 5rem);
 }
 
 .auth-panel {
   width: min(100%, 50rem);
   margin-inline: auto;
+  margin-block-start: clamp(1.5rem, 5vw, 4rem);
   display: grid;
   justify-items: center;
   gap: clamp(1.5rem, 4vw, 2rem);
