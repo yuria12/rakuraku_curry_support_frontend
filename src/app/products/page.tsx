@@ -5,7 +5,7 @@ import { mockProducts } from "@/mocks/products";
 export default function ProductsPage() {
   return (
     <section className="products-page">
-      <p className="breadcrumb">パンくずリスト&gt;商品一覧</p>
+      <p className="breadcrumb">トップ&gt;商品一覧</p>
 
       <form className="product-search" role="search">
         <fieldset>

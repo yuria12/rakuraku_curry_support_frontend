@@ -15,7 +15,7 @@ const orderTotal = productsTotal + shippingFee;
 export default function CartPage() {
   return (
     <section className="cart-page">
-      <p className="breadcrumb">パンくずリスト&gt;カート</p>
+      <p className="breadcrumb">トップ&gt;カート</p>
       <h1>カート（{mockCartItems.length}件）</h1>
 
       <div className="cart-list" aria-label="カート商品一覧">

@@ -38,7 +38,7 @@ export default async function ProductDetailPage({
 
   return (
     <section className="product-detail-page">
-      <p className="breadcrumb">パンくずリスト&gt;商品詳細</p>
+      <p className="breadcrumb">トップ&gt;商品一覧&gt;商品詳細</p>
 
       <div className="product-detail">
         <div className="product-detail__summary">
