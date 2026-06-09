@@ -122,6 +122,7 @@
 }
 
 .checkout-cart-list {
+  overflow: hidden;
   display: grid;
 }
 

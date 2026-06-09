@@ -106,9 +106,11 @@
 }
 
 .cart-item-summary {
+  width: 100%;
+  box-sizing: border-box;
   display: grid;
-  grid-template-columns: 12rem minmax(20rem, 28rem) minmax(8rem, max-content);
-  gap: clamp(1.5rem, 5vw, 3rem);
+  grid-template-columns: minmax(9rem, 10rem) minmax(15rem, 18rem) minmax(7.5rem, 9rem);
+  gap: clamp(1rem, 3vw, 2rem);
   align-items: center;
   justify-content: center;
   padding: clamp(1.5rem, 4vw, 2.25rem) clamp(1rem, 3vw, 2rem);
@@ -119,8 +121,8 @@
 }
 
 .cart-item-summary__image .product-image-frame {
-  width: 12rem;
-  height: 12rem;
+  width: 10rem;
+  height: 10rem;
   aspect-ratio: auto;
 }
 
