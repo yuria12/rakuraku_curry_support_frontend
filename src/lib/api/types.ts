@@ -1,5 +1,10 @@
 export type UserRole = "user" | "admin";
 export type CurrySize = "M" | "L";
+export type ApiErrorStatus = 400 | 401 | 403 | 404 | 409;
+
+export type ApiErrorResponse = Readonly<{
+  message: string;
+}>;
 
 export type ApiUser = Readonly<{
   email: string;
@@ -23,6 +28,12 @@ export type ApiProduct = Readonly<{
   spiceLevel: number;
 }>;
 
+export type ApiCartTopping = Readonly<{
+  id: string;
+  name: string;
+  price: number;
+}>;
+
 export type ApiCartItem = Readonly<{
   imagePath: string;
   name: string;
@@ -30,6 +41,7 @@ export type ApiCartItem = Readonly<{
   productId: string;
   quantity: number;
   size: CurrySize | "—";
+  toppings: ApiCartTopping[];
 }>;
 
 export type ApiCart = Readonly<{
