@@ -15,12 +15,12 @@ export function LogoutConfirmActions() {
 
   return (
     <div className="logout-actions">
-      <Button type="button" onClick={handleLogout}>
-        ログアウトする
-      </Button>
       <ButtonLink href="/" variant="secondary">
         キャンセル
       </ButtonLink>
+      <Button type="button" onClick={handleLogout}>
+        ログアウトする
+      </Button>
     </div>
   );
 }
