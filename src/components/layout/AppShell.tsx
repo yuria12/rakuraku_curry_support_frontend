@@ -1,6 +1,6 @@
 import Link from "next/link";
+import { AuthNavLink } from "@/components/auth/AuthNavLink";
 import { SiteLogo } from "@/components/layout/SiteLogo";
-import { mockAuthSession } from "@/mocks/auth";
 
 type AppShellProps = Readonly<{
   children: React.ReactNode;
@@ -12,10 +12,6 @@ const navItems = [
   { href: "/orders", label: "注文履歴" },
 ];
 
-const authNavItem = mockAuthSession.isLoggedIn
-  ? { href: "/login", label: "ログアウト" }
-  : { href: "/login", label: "ログイン" };
-
 export function AppShell({ children }: AppShellProps) {
   return (
     <div className="app-shell">
@@ -25,11 +21,12 @@ export function AppShell({ children }: AppShellProps) {
             <SiteLogo />
           </Link>
           <nav className="app-nav" aria-label="メインナビゲーション">
-            {[...navItems, authNavItem].map((item) => (
+            {navItems.map((item) => (
               <Link className="app-nav__link" href={item.href} key={item.href}>
                 {item.label}
               </Link>
             ))}
+            <AuthNavLink />
           </nav>
         </div>
       </header>
