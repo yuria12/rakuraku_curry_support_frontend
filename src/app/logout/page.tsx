@@ -6,7 +6,7 @@ export default function LogoutPage() {
     <section className="auth-page">
       <Breadcrumb
         items={[
-          { href: "/", label: "トップ" },
+          { href: "/products", label: "トップ" },
           { label: "ログアウト" },
         ]}
       />

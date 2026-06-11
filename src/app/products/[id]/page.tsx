@@ -41,7 +41,7 @@ export default async function ProductDetailPage({
     <section className="product-detail-page">
       <Breadcrumb
         items={[
-          { href: "/", label: "トップ" },
+          { href: "/products", label: "トップ" },
           { href: "/products", label: "商品一覧" },
           { label: "商品詳細" },
         ]}

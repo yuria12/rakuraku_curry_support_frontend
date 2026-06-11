@@ -6,7 +6,7 @@ export default function OrderCompletePage() {
     <section className="order-complete-page">
       <Breadcrumb
         items={[
-          { href: "/", label: "トップ" },
+          { href: "/products", label: "トップ" },
           { href: "/cart", label: "カート" },
           { href: "/orders/confirm", label: "注文確認" },
           { label: "注文完了" },

@@ -8,7 +8,7 @@ export default function LoginPage() {
     <section className="auth-page">
       <Breadcrumb
         items={[
-          { href: "/", label: "トップ" },
+          { href: "/products", label: "トップ" },
           { label: "ログイン" },
         ]}
       />

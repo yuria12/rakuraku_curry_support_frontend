@@ -30,7 +30,7 @@ export default function OrderConfirmPage() {
     <section className="checkout-page">
       <Breadcrumb
         items={[
-          { href: "/", label: "トップ" },
+          { href: "/products", label: "トップ" },
           { href: "/cart", label: "カート" },
           { label: "注文確認" },
         ]}

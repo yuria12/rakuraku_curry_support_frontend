@@ -8,7 +8,7 @@ export default function RegisterPage() {
     <section className="auth-page">
       <Breadcrumb
         items={[
-          { href: "/", label: "トップ" },
+          { href: "/products", label: "トップ" },
           { label: "会員登録" },
         ]}
       />
