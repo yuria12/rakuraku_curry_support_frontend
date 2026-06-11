@@ -60,7 +60,7 @@ export default async function OrderDetailPage({
     <section className="order-detail-page">
       <Breadcrumb
         items={[
-          { href: "/", label: "トップ" },
+          { href: "/products", label: "トップ" },
           { href: "/orders", label: "注文履歴" },
           { label: "注文詳細" },
         ]}

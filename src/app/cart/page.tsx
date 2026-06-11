@@ -18,7 +18,7 @@ export default function CartPage() {
     <section className="cart-page">
       <Breadcrumb
         items={[
-          { href: "/", label: "トップ" },
+          { href: "/products", label: "トップ" },
           { label: "カート" },
         ]}
       />

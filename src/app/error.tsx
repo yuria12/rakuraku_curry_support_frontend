@@ -24,8 +24,8 @@ export default function Error() {
             ただいま片付けていますので、
             しばらくしてからお試しください。
           </p>
-          <ButtonLink href="/" size="sm" variant="secondary">
-            トップページへ戻る
+          <ButtonLink href="/products" size="sm" variant="secondary">
+            商品一覧へ戻る
           </ButtonLink>
         </div>
       </div>

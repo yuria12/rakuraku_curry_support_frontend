@@ -16,7 +16,7 @@ export default function OrdersPage() {
     <section className="orders-page">
       <Breadcrumb
         items={[
-          { href: "/", label: "トップ" },
+          { href: "/products", label: "トップ" },
           { label: "注文履歴" },
         ]}
       />

@@ -8,7 +8,7 @@ export default function ProductsPage() {
     <section className="products-page">
       <Breadcrumb
         items={[
-          { href: "/", label: "トップ" },
+          { href: "/products", label: "トップ" },
           { label: "商品一覧" },
         ]}
       />
