@@ -6,13 +6,10 @@ export default function NotFound() {
     <section className="error-page error-page--not-found">
       <div className="error-page__content">
         <div className="error-page__message">
-          <h1>
-            お鍋の中を探してみましたが、
-            <br />
-            お探しのページは見つかりませんでした。
-          </h1>
+          <h1>お探しのページは見つかりませんでした。</h1>
+          <p>URLが変更されたか、ページが削除された可能性があります。</p>
           <ButtonLink href="/products" size="sm" variant="secondary">
-            商品一覧を見る
+            商品一覧へ戻る
           </ButtonLink>
         </div>
 
