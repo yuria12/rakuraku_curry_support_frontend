@@ -1,5 +1,4 @@
 .auth-page {
-  min-height: calc(100vh - var(--header-height) - var(--space-section) * 2);
   display: grid;
   align-content: start;
   gap: clamp(1rem, 3vw, 1.75rem);

@@ -3,7 +3,7 @@
 }
 
 .error-page {
-  min-height: calc(100vh - var(--header-height));
+  min-height: 100%;
   display: grid;
   align-items: start;
   padding-block: clamp(1.5rem, 4vh, 2.5rem) clamp(1rem, 3vh, 2rem);
