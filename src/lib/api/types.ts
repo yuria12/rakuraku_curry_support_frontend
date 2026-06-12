@@ -1,8 +1,10 @@
 export type UserRole = "user" | "admin";
 export type CurrySize = "M" | "L";
-export type ApiErrorStatus = 400 | 401 | 403 | 404 | 409;
+export type ApiErrorStatus = 0 | 400 | 401 | 403 | 404 | 409 | 500;
 
 export type ApiErrorResponse = Readonly<{
+  code?: string;
+  errors?: Record<string, string[]>;
   message: string;
 }>;
 
