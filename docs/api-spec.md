@@ -195,7 +195,9 @@
 ## 実装メモ
 
 - API型は `src/lib/api/types.ts` に集約します。
+- API設定は `src/lib/api/config.ts` に集約します。
 - エンドポイント文字列は `src/lib/api/endpoints.ts` に集約します。
 - 通信処理は `src/lib/api/client.ts` の `apiClient` 経由で行います。
+- モック/APIの切り替え補助は `src/lib/api/data-source.ts` を利用します。
 - UIはAPIレスポンスを直接参照せず、必要に応じて画面用型へ変換します。
 - `GET /api/cart` / `GET /api/order-confirm` の `items[].toppings[]` は、カート画面・注文確認画面のトッピング表示で利用します。

@@ -2,6 +2,8 @@ export * from "@/lib/api/admin";
 export * from "@/lib/api/auth";
 export * from "@/lib/api/cart";
 export * from "@/lib/api/client";
+export * from "@/lib/api/config";
+export * from "@/lib/api/data-source";
 export * from "@/lib/api/endpoints";
 export * from "@/lib/api/orders";
 export * from "@/lib/api/products";
