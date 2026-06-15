@@ -3,7 +3,10 @@ import { Button } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { ProductImage } from "@/components/common/ProductImage";
 import { QuantityStepper } from "@/components/common/QuantityStepper";
-import { mockProducts } from "@/mocks/products";
+import {
+  getProductDetailData,
+  getProductStaticParams,
+} from "@/lib/product-data";
 import { mockToppings } from "@/mocks/toppings";
 
 type ProductDetailPageProps = Readonly<{
@@ -13,16 +16,14 @@ type ProductDetailPageProps = Readonly<{
 }>;
 
 export function generateStaticParams() {
-  return mockProducts.map((product) => ({
-    id: String(product.id),
-  }));
+  return getProductStaticParams();
 }
 
 export default async function ProductDetailPage({
   params,
 }: ProductDetailPageProps) {
   const { id } = await params;
-  const product = mockProducts.find((item) => item.id === Number(id));
+  const product = await getProductDetailData(id);
 
   if (!product) {
     notFound();
