@@ -22,7 +22,7 @@ export function getProductStaticParams() {
   }));
 }
 
-export function getProductListData() {
+export function getProductListData(): Promise<Product[]> {
   return resolveDataSource<Product[]>({
     api: async () => {
       const products = await getProducts();
@@ -33,7 +33,9 @@ export function getProductListData() {
   });
 }
 
-export async function getProductDetailData(id: string) {
+export function getProductDetailData(
+  id: string,
+): Promise<Product | undefined> {
   return resolveDataSource<Product | undefined>({
     api: async () => {
       try {
