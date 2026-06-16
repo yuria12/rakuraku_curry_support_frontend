@@ -1,7 +1,7 @@
 import { ButtonLink } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { ProductImage } from "@/components/common/ProductImage";
-import { mockOrders } from "@/mocks/orders";
+import { getOrderHistoryListData } from "@/lib/order-data";
 
 function formatDate(date: string) {
   return new Intl.DateTimeFormat("ja-JP", {
@@ -11,7 +11,9 @@ function formatDate(date: string) {
   }).format(new Date(date));
 }
 
-export default function OrdersPage() {
+export default async function OrdersPage() {
+  const orders = await getOrderHistoryListData();
+
   return (
     <section className="orders-page">
       <Breadcrumb
@@ -27,7 +29,7 @@ export default function OrdersPage() {
       </div>
 
       <div className="order-history-list" aria-label="注文履歴一覧">
-        {mockOrders.map((order) => (
+        {orders.map((order) => (
           <article className="order-history-card" key={order.id}>
             <header className="order-history-card__header">
               <p className="order-history-card__date">

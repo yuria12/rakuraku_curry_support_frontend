@@ -55,9 +55,22 @@ export type ApiCart = Readonly<{
 }>;
 
 export type ApiOrder = Readonly<{
+  customer?: {
+    address?: string;
+    email?: string;
+    name?: string;
+    paymentMethod?: string;
+    paymentStatus?: string;
+    phone?: string;
+    postalCode?: string;
+  };
+  deliveryDate?: string;
+  deliveryTime?: string;
   id: string;
   items: ApiCartItem[];
   orderedAt: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
   shippingAddress: string;
   status: string;
   total: number;

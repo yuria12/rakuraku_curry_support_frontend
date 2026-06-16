@@ -2,7 +2,10 @@ import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { ProductImage } from "@/components/common/ProductImage";
-import { mockOrders } from "@/mocks/orders";
+import {
+  getOrderDetailData,
+  getOrderStaticParams,
+} from "@/lib/order-data";
 
 type OrderDetailPageProps = Readonly<{
   params: Promise<{
@@ -28,16 +31,14 @@ function formatDateWithWeekday(date: string) {
 }
 
 export function generateStaticParams() {
-  return mockOrders.map((order) => ({
-    id: order.id,
-  }));
+  return getOrderStaticParams();
 }
 
 export default async function OrderDetailPage({
   params,
 }: OrderDetailPageProps) {
   const { id } = await params;
-  const order = mockOrders.find((item) => item.id === id);
+  const order = await getOrderDetailData(id);
 
   if (!order) {
     notFound();

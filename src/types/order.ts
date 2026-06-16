@@ -2,7 +2,7 @@ import type { Product } from "@/types/product";
 import type { Topping } from "@/types/topping";
 
 export type OrderHistoryItem = Readonly<{
-  id: number;
+  id: number | string;
   product: Product;
   quantity: number;
   size: "M" | "L";
