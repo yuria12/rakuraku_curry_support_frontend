@@ -1,9 +1,11 @@
 import { Button } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { ProductCard } from "@/components/product/ProductCard";
-import { mockProducts } from "@/mocks/products";
+import { getProductListData } from "@/lib/product-data";
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const products = await getProductListData();
+
   return (
     <section className="products-page">
       <Breadcrumb
@@ -30,7 +32,7 @@ export default function ProductsPage() {
       </form>
 
       <div className="product-list-grid" aria-label="商品一覧">
-        {mockProducts.map((product) => (
+        {products.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
