@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { AuthNavLink } from "@/components/auth/AuthNavLink";
 import { SiteLogo } from "@/components/layout/SiteLogo";
+import { getAuthSession } from "@/lib/auth-session";
 
 type AppShellProps = Readonly<{
   children: React.ReactNode;
@@ -12,7 +13,9 @@ const navItems = [
   { href: "/orders", label: "注文履歴" },
 ];
 
-export function AppShell({ children }: AppShellProps) {
+export async function AppShell({ children }: AppShellProps) {
+  const session = await getAuthSession();
+
   return (
     <div className="app-shell">
       <header className="app-header">
@@ -26,7 +29,7 @@ export function AppShell({ children }: AppShellProps) {
                 {item.label}
               </Link>
             ))}
-            <AuthNavLink />
+            <AuthNavLink isLoggedIn={session.isLoggedIn} />
           </nav>
         </div>
       </header>

@@ -7,6 +7,7 @@ export const apiEndpoints = {
   },
   auth: {
     login: "/api/login",
+    logout: "/api/logout",
     otpVerification: "/api/otp-verification",
     passwordChange: "/api/password-change",
     userRegister: "/api/user-register",

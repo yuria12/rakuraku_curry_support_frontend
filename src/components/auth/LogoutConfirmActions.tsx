@@ -1,26 +1,15 @@
-"use client";
-
-import { useRouter } from "next/navigation";
-import { authChangedEventName, authStatusKey } from "@/components/auth/AuthNavLink";
+import { logoutAction } from "@/app/logout/actions";
 import { Button, ButtonLink } from "@/components/common/Button";
 
 export function LogoutConfirmActions() {
-  const router = useRouter();
-
-  function handleLogout() {
-    window.localStorage.setItem(authStatusKey, "logged-out");
-    window.dispatchEvent(new Event(authChangedEventName));
-    router.push("/");
-  }
-
   return (
     <div className="logout-actions">
-      <ButtonLink href="/" variant="secondary">
+      <ButtonLink href="/products" variant="secondary">
         キャンセル
       </ButtonLink>
-      <Button type="button" onClick={handleLogout}>
-        ログアウトする
-      </Button>
+      <form action={logoutAction}>
+        <Button type="submit">ログアウトする</Button>
+      </form>
     </div>
   );
 }

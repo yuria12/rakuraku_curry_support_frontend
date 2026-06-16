@@ -1,7 +1,10 @@
 import { LogoutConfirmActions } from "@/components/auth/LogoutConfirmActions";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
+import { requireAuth } from "@/lib/auth-session";
 
-export default function LogoutPage() {
+export default async function LogoutPage() {
+  await requireAuth("/login?redirectTo=/logout");
+
   return (
     <section className="auth-page">
       <Breadcrumb
