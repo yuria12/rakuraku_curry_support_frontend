@@ -1,9 +1,42 @@
+import { redirect } from "next/navigation";
+import { loginAction } from "@/app/login/actions";
 import { Button, ButtonLink } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
+import { Message } from "@/components/common/Message";
 import { PasswordInput } from "@/components/common/PasswordInput";
 import { TextInput } from "@/components/common/TextInput";
+import { getAuthSession } from "@/lib/auth-session";
 
-export default function LoginPage() {
+type LoginPageProps = Readonly<{
+  searchParams?: Promise<{
+    error?: string;
+    redirectTo?: string;
+  }>;
+}>;
+
+const loginErrorMessages = {
+  invalid: "メールアドレスまたはパスワードが正しくありません。",
+  required: "メールアドレスとパスワードを入力してください。",
+} as const;
+
+function getLoginErrorMessage(error?: string) {
+  if (error === "invalid" || error === "required") {
+    return loginErrorMessages[error];
+  }
+
+  return undefined;
+}
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const session = await getAuthSession();
+  const params = await searchParams;
+  const redirectTo = params?.redirectTo ?? "/products";
+  const errorMessage = getLoginErrorMessage(params?.error);
+
+  if (session.isLoggedIn) {
+    redirect(redirectTo);
+  }
+
   return (
     <section className="auth-page">
       <Breadcrumb
@@ -16,7 +49,11 @@ export default function LoginPage() {
       <div className="auth-panel">
         <h1>2段階認証</h1>
 
-        <form className="auth-form" action="/api/login" method="post">
+        <form className="auth-form" action={loginAction}>
+          <input name="redirectTo" type="hidden" value={redirectTo} />
+          {errorMessage ? (
+            <Message variant="error">{errorMessage}</Message>
+          ) : null}
           <TextInput
             autoComplete="email"
             id="email"

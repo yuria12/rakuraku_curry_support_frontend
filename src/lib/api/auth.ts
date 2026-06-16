@@ -13,6 +13,20 @@ export function login(request: LoginRequest) {
   return apiClient.post<LoginResponse>(apiEndpoints.auth.login, request);
 }
 
+export function logout(token?: string) {
+  return apiClient.post<MessageResponse>(
+    apiEndpoints.auth.logout,
+    {},
+    token
+      ? {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      : undefined,
+  );
+}
+
 export function adminLogin(request: LoginRequest) {
   return apiClient.post<LoginResponse>(apiEndpoints.admin.login, request);
 }

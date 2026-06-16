@@ -8,6 +8,7 @@
 | カテゴリ | メソッド | エンドポイント | 概要 | 認証 | 権限 |
 | --- | --- | --- | --- | --- | --- |
 | 認証 | POST | `/api/login` | ログイン | 不要 | 全員 |
+| 認証 | POST | `/api/logout` | ログアウト | 必要 | 全員 |
 | 認証 | POST | `/api/admin/login` | 管理者ログイン | 不要 | admin |
 | 認証 | POST | `/api/user-register` | ユーザー登録 | 不要 | 全員 |
 | 認証 | POST | `/api/password-change` | パスワード変更 | 必要 | 全員 |
@@ -35,6 +36,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `POST /api/login` | body | `email` | string | 必須 | メールアドレス |
 | `POST /api/login` | body | `password` | string | 必須 | パスワード |
+| `POST /api/logout` | header | `Authorization` | string | 必須 | `Bearer {token}` |
 | `POST /api/admin/login` | body | `email` | string | 必須 | 管理者メールアドレス |
 | `POST /api/admin/login` | body | `password` | string | 必須 | パスワード |
 | `POST /api/user-register` | body | `name` | string | 必須 | 氏名 |
@@ -80,6 +82,8 @@
   - `user.name: string`
   - `user.email: string`
   - `user.role: "user" | "admin"`
+- `POST /api/logout`
+  - `message: string`
 - `POST /api/admin/login`
   - `token: string`
   - `user.id: string`
