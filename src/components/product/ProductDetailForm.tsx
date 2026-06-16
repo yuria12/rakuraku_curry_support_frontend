@@ -29,7 +29,7 @@ export function ProductDetailForm({
 }: ProductDetailFormProps) {
   const [size, setSize] = useState<CurrySize>("M");
   const [selectedToppingIds, setSelectedToppingIds] = useState<string[]>([]);
-  const quantity = 1;
+  const [quantity, setQuantity] = useState(1);
 
   const selectedToppings = useMemo(() => {
     return toppings.filter((topping) =>
@@ -96,7 +96,16 @@ export function ProductDetailForm({
           <span>数量</span>
           <p>数量を選択してください</p>
         </div>
-        <QuantityStepper value={quantity} />
+        <QuantityStepper
+          decrementDisabled={quantity <= 1}
+          value={quantity}
+          onDecrement={() =>
+            setQuantity((currentQuantity) => Math.max(1, currentQuantity - 1))
+          }
+          onIncrement={() =>
+            setQuantity((currentQuantity) => currentQuantity + 1)
+          }
+        />
       </div>
 
       <p className="detail-total">
