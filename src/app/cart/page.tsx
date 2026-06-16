@@ -1,19 +1,15 @@
+import {
+  deleteCartItemAction,
+  updateCartItemQuantityAction,
+} from "@/app/cart/actions";
+import { CartItemSummary } from "@/components/cart/CartItemSummary";
 import { ButtonLink } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
-import {
-  CartItemSummary,
-  getCartItemSubtotal,
-} from "@/components/cart/CartItemSummary";
-import { mockCartItems } from "@/mocks/cart";
+import { getCartData } from "@/lib/cart-data";
 
-const shippingFee = 500;
-const productsTotal = mockCartItems.reduce(
-  (total, item) => total + getCartItemSubtotal(item),
-  0,
-);
-const orderTotal = productsTotal + shippingFee;
+export default async function CartPage() {
+  const cart = await getCartData();
 
-export default function CartPage() {
   return (
     <section className="cart-page">
       <Breadcrumb
@@ -22,15 +18,17 @@ export default function CartPage() {
           { label: "カート" },
         ]}
       />
-      <h1>カート（{mockCartItems.length}件）</h1>
+      <h1>カート（{cart.items.length}件）</h1>
 
       <div className="cart-list" aria-label="カート商品一覧">
-        {mockCartItems.map((item) => (
+        {cart.items.map((item) => (
           <CartItemSummary
+            deleteAction={deleteCartItemAction}
             headingLevel="h2"
             item={item}
             key={item.id}
             showActions
+            updateQuantityAction={updateCartItemQuantityAction}
           />
         ))}
       </div>
@@ -39,15 +37,15 @@ export default function CartPage() {
         <dl>
           <div>
             <dt>商品小計</dt>
-            <dd>¥{productsTotal.toLocaleString()}</dd>
+            <dd>¥{cart.productsTotal.toLocaleString()}</dd>
           </div>
           <div>
             <dt>送料</dt>
-            <dd>¥{shippingFee.toLocaleString()}</dd>
+            <dd>¥{cart.shippingFee.toLocaleString()}</dd>
           </div>
           <div>
             <dt>合計：</dt>
-            <dd>¥{orderTotal.toLocaleString()}</dd>
+            <dd>¥{cart.orderTotal.toLocaleString()}</dd>
           </div>
         </dl>
         <ButtonLink href="/orders/confirm">注文に進む</ButtonLink>

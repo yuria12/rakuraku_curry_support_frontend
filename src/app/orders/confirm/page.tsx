@@ -1,13 +1,11 @@
 import {
   CartItemSummary,
-  getCartItemSubtotal,
 } from "@/components/cart/CartItemSummary";
 import { ButtonLink } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { TextInput } from "@/components/common/TextInput";
-import { mockCartItems } from "@/mocks/cart";
+import { getOrderConfirmData } from "@/lib/order-confirm-data";
 
-const shippingFee = 500;
 const deliveryTimes = [
   "10時",
   "11時",
@@ -19,13 +17,11 @@ const deliveryTimes = [
   "17時",
   "18時",
 ];
-const productsTotal = mockCartItems.reduce(
-  (total, item) => total + getCartItemSubtotal(item),
-  0,
-);
-const orderTotal = productsTotal + shippingFee;
 
-export default function OrderConfirmPage() {
+export default async function OrderConfirmPage() {
+  const orderConfirm = await getOrderConfirmData();
+  const { cart, customer } = orderConfirm;
+
   return (
     <section className="checkout-page">
       <Breadcrumb
@@ -39,14 +35,18 @@ export default function OrderConfirmPage() {
       <section className="checkout-section" aria-label="配送情報">
         <h1>配送情報</h1>
         <div className="checkout-form">
-          <TextInput label="名前" />
-          <TextInput label="メールアドレス" type="email" />
+          <TextInput defaultValue={customer.name} label="名前" />
+          <TextInput
+            defaultValue={customer.email}
+            label="メールアドレス"
+            type="email"
+          />
           <div className="checkout-postal">
-            <TextInput label="郵便番号" />
+            <TextInput defaultValue={customer.postalCode} label="郵便番号" />
             <button type="button">住所検索</button>
           </div>
-          <TextInput label="住所" />
-          <TextInput label="電話番号" type="tel" />
+          <TextInput defaultValue={customer.address} label="住所" />
+          <TextInput defaultValue={customer.phone} label="電話番号" type="tel" />
           <TextInput label="お届け日" type="date" />
           <div className="checkout-radio-field">
             <p>お届け時間</p>
@@ -71,24 +71,39 @@ export default function OrderConfirmPage() {
         <h2>支払方法</h2>
         <div className="checkout-payment-options">
           <label>
-            <input name="paymentMethod" type="radio" value="creditCard" />
+            <input
+              defaultChecked={customer.paymentMethod === "creditCard"}
+              name="paymentMethod"
+              type="radio"
+              value="creditCard"
+            />
             クレジットカード
           </label>
           <label>
-            <input name="paymentMethod" type="radio" value="payPay" />
+            <input
+              defaultChecked={customer.paymentMethod === "payPay"}
+              name="paymentMethod"
+              type="radio"
+              value="payPay"
+            />
             PayPay
           </label>
           <label>
-            <input name="paymentMethod" type="radio" value="cash" />
+            <input
+              defaultChecked={customer.paymentMethod === "cash"}
+              name="paymentMethod"
+              type="radio"
+              value="cash"
+            />
             コンビニ払い
           </label>
         </div>
       </section>
 
       <section className="checkout-section" aria-label="カート内容">
-        <h2>カート（{mockCartItems.length}件）</h2>
+        <h2>カート（{cart.items.length}件）</h2>
         <div className="checkout-cart-list">
-          {mockCartItems.map((item) => (
+          {cart.items.map((item) => (
             <CartItemSummary item={item} key={item.id} />
           ))}
         </div>
@@ -98,15 +113,15 @@ export default function OrderConfirmPage() {
         <dl>
           <div>
             <dt>商品小計</dt>
-            <dd>¥{productsTotal.toLocaleString()}</dd>
+            <dd>¥{cart.productsTotal.toLocaleString()}</dd>
           </div>
           <div>
             <dt>送料</dt>
-            <dd>¥{shippingFee.toLocaleString()}</dd>
+            <dd>¥{cart.shippingFee.toLocaleString()}</dd>
           </div>
           <div>
             <dt>合計：</dt>
-            <dd>¥{orderTotal.toLocaleString()}</dd>
+            <dd>¥{cart.orderTotal.toLocaleString()}</dd>
           </div>
         </dl>
         <div className="checkout-summary__actions">

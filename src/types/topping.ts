@@ -1,5 +1,5 @@
 export type Topping = Readonly<{
-  id: number;
+  id: number | string;
   name: string;
   priceL: number;
   priceM: number;

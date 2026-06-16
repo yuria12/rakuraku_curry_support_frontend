@@ -3,9 +3,11 @@ import { QuantityStepper } from "@/components/common/QuantityStepper";
 import type { CartItem } from "@/types/cart";
 
 type CartItemSummaryProps = Readonly<{
+  deleteAction?: (formData: FormData) => void | Promise<void>;
   headingLevel?: "h2" | "h3";
   item: CartItem;
   showActions?: boolean;
+  updateQuantityAction?: (formData: FormData) => void | Promise<void>;
 }>;
 
 export function getCartItemPrice(item: CartItem) {
@@ -28,11 +30,16 @@ export function getCartItemSubtotal(item: CartItem) {
 }
 
 export function CartItemSummary({
+  deleteAction,
   headingLevel = "h3",
   item,
   showActions = false,
+  updateQuantityAction,
 }: CartItemSummaryProps) {
   const Heading = headingLevel;
+  const cartItemId = String(item.id);
+  const nextDecrementQuantity = Math.max(1, item.quantity - 1);
+  const nextIncrementQuantity = item.quantity + 1;
 
   return (
     <article className="cart-item-summary">
@@ -71,10 +78,47 @@ export function CartItemSummary({
         {showActions ? (
           <>
             <p className="cart-item-summary__quantity-label">数量</p>
-            <QuantityStepper value={item.quantity} />
-            <button className="cart-item-summary__delete" type="button">
-              削除
-            </button>
+            {updateQuantityAction ? (
+              <form
+                action={updateQuantityAction}
+                className="quantity-stepper"
+                aria-label="数量"
+              >
+                <input name="cartItemId" type="hidden" value={cartItemId} />
+                <button
+                  aria-label="数量を減らす"
+                  disabled={item.quantity <= 1}
+                  name="quantity"
+                  type="submit"
+                  value={nextDecrementQuantity}
+                >
+                  -
+                </button>
+                <span>{item.quantity}</span>
+                <button
+                  aria-label="数量を増やす"
+                  name="quantity"
+                  type="submit"
+                  value={nextIncrementQuantity}
+                >
+                  +
+                </button>
+              </form>
+            ) : (
+              <QuantityStepper value={item.quantity} />
+            )}
+            {deleteAction ? (
+              <form action={deleteAction}>
+                <input name="cartItemId" type="hidden" value={cartItemId} />
+                <button className="cart-item-summary__delete" type="submit">
+                  削除
+                </button>
+              </form>
+            ) : (
+              <button className="cart-item-summary__delete" type="button">
+                削除
+              </button>
+            )}
           </>
         ) : (
           <p className="cart-item-summary__count">個数：{item.quantity}個</p>
