@@ -288,20 +288,6 @@
   font-size: 0.8rem;
 }
 
-.detail-total--l {
-  display: none;
-}
-
-.product-detail__form:has(input[name="size"][value="L"]:checked)
-  .detail-total--m {
-  display: none;
-}
-
-.product-detail__form:has(input[name="size"][value="L"]:checked)
-  .detail-total--l {
-  display: grid;
-}
-
 @media (max-width: 820px) {
   .product-detail {
     grid-template-columns: 1fr;

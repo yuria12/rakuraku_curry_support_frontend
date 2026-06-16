@@ -115,6 +115,33 @@ function addMockCartItem(request: AddCartItemRequest) {
   });
 }
 
+function updateMockCartItemQuantity(id: string, quantity: number) {
+  const itemIndex = mockCartItems.findIndex(
+    (cartItem) => String(cartItem.id) === id,
+  );
+
+  if (itemIndex < 0) {
+    return;
+  }
+
+  mockCartItems.splice(itemIndex, 1, {
+    ...mockCartItems[itemIndex],
+    quantity,
+  });
+}
+
+function deleteMockCartItem(id: string) {
+  const itemIndex = mockCartItems.findIndex(
+    (cartItem) => String(cartItem.id) === id,
+  );
+
+  if (itemIndex < 0) {
+    return;
+  }
+
+  mockCartItems.splice(itemIndex, 1);
+}
+
 export function addCartItem(request: AddCartItemRequest): Promise<void> {
   return resolveDataSource<void>({
     api: async () => {
@@ -132,7 +159,7 @@ export function updateCartItemQuantity(
     api: async () => {
       await updateCartItemQuantityApi(id, { quantity });
     },
-    mock: () => undefined,
+    mock: () => updateMockCartItemQuantity(id, quantity),
   });
 }
 
@@ -141,6 +168,6 @@ export function deleteCartItem(id: string): Promise<void> {
     api: async () => {
       await deleteCartItemApi(id);
     },
-    mock: () => undefined,
+    mock: () => deleteMockCartItem(id),
   });
 }

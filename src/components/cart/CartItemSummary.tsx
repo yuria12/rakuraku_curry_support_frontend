@@ -40,6 +40,10 @@ export function CartItemSummary({
   const cartItemId = String(item.id);
   const nextDecrementQuantity = Math.max(1, item.quantity - 1);
   const nextIncrementQuantity = item.quantity + 1;
+  const toppingNames =
+    item.toppings.length > 0
+      ? item.toppings.map((topping) => topping.name).join("、")
+      : "なし";
 
   return (
     <article className="cart-item-summary">
@@ -55,22 +59,9 @@ export function CartItemSummary({
             <dt>サイズ：{item.size}</dt>
             <dd>¥{getCartItemPrice(item).toLocaleString()}</dd>
           </div>
-          {item.toppings.length > 0 ? (
-            item.toppings.map((topping, index) => (
-              <div key={topping.id}>
-                <dt>
-                  {index === 0 ? "トッピング：" : ""}
-                  {topping.name}
-                </dt>
-                <dd>¥{getCartToppingPrice(item, topping).toLocaleString()}</dd>
-              </div>
-            ))
-          ) : (
-            <div>
-              <dt>トッピング：なし</dt>
-              <dd>¥0</dd>
-            </div>
-          )}
+          <div className="cart-item-summary__breakdown-row--full">
+            <dt>トッピング：{toppingNames}</dt>
+          </div>
         </dl>
       </div>
 

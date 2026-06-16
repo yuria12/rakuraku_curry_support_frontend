@@ -196,6 +196,10 @@
   align-items: start;
 }
 
+.cart-item-summary__breakdown div.cart-item-summary__breakdown-row--full {
+  grid-template-columns: 1fr;
+}
+
 .cart-item-summary__breakdown dt {
   min-width: 0;
 }

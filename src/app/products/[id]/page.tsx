@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
-import { Button } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { ProductImage } from "@/components/common/ProductImage";
-import { QuantityStepper } from "@/components/common/QuantityStepper";
-import { ToppingPicker } from "@/components/product/ToppingPicker";
+import { ProductDetailForm } from "@/components/product/ProductDetailForm";
 import {
   getProductDetailData,
   getProductStaticParams,
@@ -32,9 +30,6 @@ export default async function ProductDetailPage({
   }
 
   const toppings = await getToppingListData();
-  const quantity = 1;
-  const totalPriceM = product.priceM * quantity;
-  const totalPriceL = product.priceL * quantity;
 
   return (
     <section className="product-detail-page">
@@ -55,52 +50,11 @@ export default async function ProductDetailPage({
           </div>
         </div>
 
-        <form action={addProductToCartAction} className="product-detail__form">
-          <input name="productId" type="hidden" value={String(product.id)} />
-          <input name="quantity" type="hidden" value={quantity} />
-
-          <fieldset className="option-group option-group--size">
-            <legend>サイズ選択</legend>
-            <div className="size-options">
-              <label>
-                <input defaultChecked name="size" type="radio" value="M" />
-                <span>
-                  M
-                  <strong>¥{product.priceM.toLocaleString()}</strong>
-                </span>
-              </label>
-              <label>
-                <input name="size" type="radio" value="L" />
-                <span>
-                  L
-                  <strong>¥{product.priceL.toLocaleString()}</strong>
-                </span>
-              </label>
-            </div>
-          </fieldset>
-
-          <fieldset className="option-group option-group--toppings">
-            <legend>トッピング</legend>
-            <ToppingPicker toppings={toppings} />
-          </fieldset>
-
-          <div className="detail-quantity">
-            <div>
-              <span>数量</span>
-              <p>数量を選択してください</p>
-            </div>
-            <QuantityStepper value={quantity} />
-          </div>
-
-          <p className="detail-total detail-total--m">
-            合計 ¥{totalPriceM.toLocaleString()}
-          </p>
-          <p className="detail-total detail-total--l">
-            合計 ¥{totalPriceL.toLocaleString()}
-          </p>
-
-          <Button type="submit">カートに入れる</Button>
-        </form>
+        <ProductDetailForm
+          action={addProductToCartAction}
+          product={product}
+          toppings={toppings}
+        />
       </div>
     </section>
   );
