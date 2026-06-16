@@ -28,6 +28,15 @@ export type ApiProduct = Readonly<{
   priceL: number;
   priceM: number;
   spiceLevel: number;
+  toppingList?: ApiTopping[];
+  toppings?: ApiTopping[];
+}>;
+
+export type ApiTopping = Readonly<{
+  id: number | string;
+  name: string;
+  priceL: number;
+  priceM: number;
 }>;
 
 export type ApiCartTopping = Readonly<{
@@ -100,6 +109,7 @@ export type AddCartItemRequest = Readonly<{
   productId: string;
   quantity: number;
   size: CurrySize;
+  toppingIds?: string[];
 }>;
 
 export type AddCartItemResponse = MessageResponse &

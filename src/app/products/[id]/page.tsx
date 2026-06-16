@@ -3,11 +3,13 @@ import { Button } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { ProductImage } from "@/components/common/ProductImage";
 import { QuantityStepper } from "@/components/common/QuantityStepper";
+import { ToppingPicker } from "@/components/product/ToppingPicker";
 import {
   getProductDetailData,
   getProductStaticParams,
 } from "@/lib/product-data";
 import { mockToppings } from "@/mocks/toppings";
+import { addProductToCartAction } from "./actions";
 
 type ProductDetailPageProps = Readonly<{
   params: Promise<{
@@ -29,14 +31,10 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  const selectedSize = "M";
   const quantity = 1;
-  const selectedToppings = mockToppings;
-  const toppingsTotal = selectedToppings.reduce(
-    (total, topping) => total + topping.priceM,
-    0,
-  );
-  const totalPrice = (product.priceM + toppingsTotal) * quantity;
+  const toppings = product.toppings?.length ? product.toppings : mockToppings;
+  const totalPriceM = product.priceM * quantity;
+  const totalPriceL = product.priceL * quantity;
 
   return (
     <section className="product-detail-page">
@@ -57,35 +55,33 @@ export default async function ProductDetailPage({
           </div>
         </div>
 
-        <form className="product-detail__form">
-          <fieldset className="option-group">
+        <form action={addProductToCartAction} className="product-detail__form">
+          <input name="productId" type="hidden" value={String(product.id)} />
+          <input name="quantity" type="hidden" value={quantity} />
+
+          <fieldset className="option-group option-group--size">
             <legend>サイズ選択</legend>
-            <label>
-              <input
-                defaultChecked
-                name="size"
-                type="radio"
-                value="M"
-              />
-              <span>M</span>
-              <strong>¥{product.priceM.toLocaleString()}</strong>
-            </label>
-            <label>
-              <input name="size" type="radio" value="L" />
-              <span>L</span>
-              <strong>¥{product.priceL.toLocaleString()}</strong>
-            </label>
+            <div className="size-options">
+              <label>
+                <input defaultChecked name="size" type="radio" value="M" />
+                <span>
+                  M
+                  <strong>¥{product.priceM.toLocaleString()}</strong>
+                </span>
+              </label>
+              <label>
+                <input name="size" type="radio" value="L" />
+                <span>
+                  L
+                  <strong>¥{product.priceL.toLocaleString()}</strong>
+                </span>
+              </label>
+            </div>
           </fieldset>
 
-          <fieldset className="option-group">
+          <fieldset className="option-group option-group--toppings">
             <legend>トッピング</legend>
-            {mockToppings.map((topping) => (
-              <label key={topping.id}>
-                <input defaultChecked name="toppings" type="checkbox" />
-                <span>{topping.name}</span>
-                <strong>+¥{topping.priceM.toLocaleString()}</strong>
-              </label>
-            ))}
+            <ToppingPicker toppings={toppings} />
           </fieldset>
 
           <div className="detail-quantity">
@@ -96,12 +92,14 @@ export default async function ProductDetailPage({
             <QuantityStepper value={quantity} />
           </div>
 
-          <p className="detail-total">
-            合計 ¥{totalPrice.toLocaleString()}
-            <span>表示価格は{selectedSize}サイズ・選択中トッピングの仮計算です。</span>
+          <p className="detail-total detail-total--m">
+            合計 ¥{totalPriceM.toLocaleString()}
+          </p>
+          <p className="detail-total detail-total--l">
+            合計 ¥{totalPriceL.toLocaleString()}
           </p>
 
-          <Button type="button">カートに入れる</Button>
+          <Button type="submit">カートに入れる</Button>
         </form>
       </div>
     </section>
