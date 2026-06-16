@@ -37,6 +37,7 @@ export type ApiCartTopping = Readonly<{
 }>;
 
 export type ApiCartItem = Readonly<{
+  id?: string;
   imagePath: string;
   name: string;
   price: number;
@@ -102,6 +103,20 @@ export type AddCartItemRequest = Readonly<{
 }>;
 
 export type AddCartItemResponse = MessageResponse &
+  Readonly<{
+    cart: ApiCart;
+  }>;
+
+export type UpdateCartItemQuantityRequest = Readonly<{
+  quantity: number;
+}>;
+
+export type UpdateCartItemQuantityResponse = MessageResponse &
+  Readonly<{
+    cart: ApiCart;
+  }>;
+
+export type DeleteCartItemResponse = MessageResponse &
   Readonly<{
     cart: ApiCart;
   }>;

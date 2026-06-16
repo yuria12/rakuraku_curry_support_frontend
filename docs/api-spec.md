@@ -17,6 +17,8 @@
 | 商品 | GET | `/api/products/{id}` | 商品詳細取得 | 不要 | 全員 |
 | カート | GET | `/api/cart` | カート取得 | 不要 | 全員 |
 | カート | POST | `/api/cart/items` | カートに商品追加 | 不要 | 全員 |
+| カート | PUT | `/api/cart/items/{id}` | カート商品の数量変更 | 不要 | 全員 |
+| カート | DELETE | `/api/cart/items/{id}` | カート商品削除 | 不要 | 全員 |
 | 注文 | GET | `/api/order-confirm` | 注文確認画面データ取得 | 不要 | 全員 |
 | 注文 | POST | `/api/orders` | 注文確定 | 不要 | 全員 |
 | 注文 | GET | `/api/orders` | 注文一覧取得 | 不要 | 全員 |
@@ -49,6 +51,9 @@
 | `POST /api/cart/items` | body | `productId` | string | 必須 | 商品ID |
 | `POST /api/cart/items` | body | `size` | string | 必須 | `M` または `L` |
 | `POST /api/cart/items` | body | `quantity` | number | 必須 | 数量 |
+| `PUT /api/cart/items/{id}` | path | `id` | string | 必須 | カート商品ID |
+| `PUT /api/cart/items/{id}` | body | `quantity` | number | 必須 | 変更後の数量 |
+| `DELETE /api/cart/items/{id}` | path | `id` | string | 必須 | カート商品ID |
 | `POST /api/orders` | body | `cartItems` | array | 任意 | モックでは未使用 |
 | `POST /api/orders` | body | `shippingAddress` | string | 任意 | モックでは未使用 |
 | `POST /api/orders` | body | `paymentMethod` | string | 任意 | 例: `credit-card` |
@@ -107,6 +112,7 @@
 ### カート
 
 - `GET /api/cart`
+  - `items[].id: string`
   - `items[].productId: string`
   - `items[].name: string`
   - `items[].imagePath: string`
@@ -120,6 +126,14 @@
   - `shippingFee: number`
   - `total: number`
 - `POST /api/cart/items`
+  - `message: string`
+  - `cart: object`
+  - `cart` は `GET /api/cart` と同じ構造
+- `PUT /api/cart/items/{id}`
+  - `message: string`
+  - `cart: object`
+  - `cart` は `GET /api/cart` と同じ構造
+- `DELETE /api/cart/items/{id}`
   - `message: string`
   - `cart: object`
   - `cart` は `GET /api/cart` と同じ構造

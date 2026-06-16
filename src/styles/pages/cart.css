@@ -10,6 +10,13 @@
   font-weight: 500;
 }
 
+.cart-loading {
+  margin: 0;
+  padding-block: clamp(2rem, 8vw, 4rem);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
 .cart-list {
   width: min(100%, 840px);
   margin-inline: auto;

@@ -13,6 +13,7 @@ export const apiEndpoints = {
   },
   cart: {
     base: "/api/cart",
+    itemById: (id: string) => `/api/cart/items/${id}`,
     items: "/api/cart/items",
   },
   orders: {

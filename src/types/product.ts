@@ -1,6 +1,6 @@
 export type Product = Readonly<{
   description: string;
-  id: number;
+  id: number | string;
   imagePath: string;
   name: string;
   priceL: number;
