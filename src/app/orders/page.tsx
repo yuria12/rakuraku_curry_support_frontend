@@ -2,13 +2,44 @@ import { ButtonLink } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { ProductImage } from "@/components/common/ProductImage";
 import { getOrderHistoryListData } from "@/lib/order-data";
+import type { OrderHistory } from "@/types/order";
+
+const deliveryStatuses = [
+  { className: "order-history-card__status--preparing", label: "配送準備中" },
+  { className: "order-history-card__status--shipping", label: "配送中" },
+  { className: "order-history-card__status--delivered", label: "配送完了" },
+] as const;
 
 function formatDate(date: string) {
-  return new Intl.DateTimeFormat("ja-JP", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  }).format(new Date(date));
+  const datePart = date.split(/[T\s]/)[0];
+
+  return datePart.replaceAll("-", "/");
+}
+
+function formatOrderNumber(id: string) {
+  return id.startsWith("#") ? id : `#${id}`;
+}
+
+function getOrderItemSummary(order: OrderHistory) {
+  const [firstItem] = order.items;
+
+  if (!firstItem) {
+    return {
+      name: "商品情報なし",
+      suffix: "",
+    };
+  }
+
+  const otherItemCount = order.items.length - 1;
+
+  return {
+    name: firstItem.product.name,
+    suffix: otherItemCount > 0 ? `（他${otherItemCount}商品）` : "",
+  };
+}
+
+function getDeliveryStatus(index: number) {
+  return deliveryStatuses[index % deliveryStatuses.length];
 }
 
 export default async function OrdersPage() {
@@ -29,60 +60,63 @@ export default async function OrdersPage() {
       </div>
 
       <div className="order-history-list" aria-label="注文履歴一覧">
-        {orders.map((order) => (
-          <article className="order-history-card" key={order.id}>
-            <header className="order-history-card__header">
-              <p className="order-history-card__date">
-                お届け日：<strong>{formatDate(order.deliveryDate)}</strong>
-              </p>
-              <ButtonLink
-                href={`/orders/${order.id}`}
-                size="sm"
-                variant="secondary"
-              >
-                注文詳細
-              </ButtonLink>
-              <p className="order-history-card__total">
-                合計金額：<strong>¥{order.totalPrice.toLocaleString()}</strong>
-              </p>
-            </header>
+        {orders.map((order, index) => {
+          const itemSummary = getOrderItemSummary(order);
+          const deliveryStatus = getDeliveryStatus(index);
 
-            <div className="order-history-card__items">
-              {order.items.map((item) => (
-                <article className="order-history-item" key={item.id}>
-                  <div className="order-history-item__image">
-                    <ProductImage
-                      alt={item.product.name}
-                      src={item.product.imagePath}
-                    />
+          return (
+            <article className="order-history-card" key={order.id}>
+              <div className="order-history-card__image">
+                {order.items[0] ? (
+                  <ProductImage
+                    alt={order.items[0].product.name}
+                    src={order.items[0].product.imagePath}
+                  />
+                ) : null}
+              </div>
+
+              <div className="order-history-card__content">
+                <p className="order-history-card__items-summary">
+                  <span>{itemSummary.name}</span>
+                  {itemSummary.suffix ? (
+                    <span className="order-history-card__items-summary-sub">
+                      {itemSummary.suffix}
+                    </span>
+                  ) : null}
+                </p>
+                <span
+                  className={`order-history-card__status ${deliveryStatus.className}`}
+                >
+                  {deliveryStatus.label}
+                </span>
+                <dl className="order-history-card__meta">
+                  <div>
+                    <dt>注文日</dt>
+                    <dd>{formatDate(order.deliveryDate)}</dd>
                   </div>
-
-                  <div className="order-history-item__name">
-                    <p>{item.product.name}</p>
+                  <div>
+                    <dt>注文番号</dt>
+                    <dd>{formatOrderNumber(order.id)}</dd>
                   </div>
+                </dl>
+              </div>
 
-                  <dl className="order-history-item__details">
-                    <div>
-                      <dt>サイズ：</dt>
-                      <dd>{item.size}</dd>
-                    </div>
-                    <div>
-                      <dt>個数：</dt>
-                      <dd>{item.quantity}個</dd>
-                    </div>
-                  </dl>
-
-                  <dl className="order-history-item__subtotal">
-                    <div>
-                      <dt>小計：</dt>
-                      <dd>¥{item.subtotal.toLocaleString()}</dd>
-                    </div>
-                  </dl>
-                </article>
-              ))}
-            </div>
-          </article>
-        ))}
+              <div className="order-history-card__actions">
+                <p className="order-history-card__total-label">合計金額</p>
+                <p className="order-history-card__total">
+                  ¥{order.totalPrice.toLocaleString()}
+                </p>
+                <ButtonLink
+                  href={`/orders/${order.id}`}
+                  size="sm"
+                  variant="secondary"
+                >
+                  詳細を見る &gt;
+                </ButtonLink>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       <div className="orders-page__footer">

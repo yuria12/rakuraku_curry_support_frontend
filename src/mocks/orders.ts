@@ -13,7 +13,7 @@ export const mockOrders: OrderHistory[] = [
       phone: "090-0000-0000",
       postalCode: "100-0001",
     },
-    id: "RK-20260609-001",
+    id: "202606090001",
     deliveryDate: "2026-06-09",
     deliveryTime: "12時",
     items: [
@@ -58,7 +58,7 @@ export const mockOrders: OrderHistory[] = [
       phone: "090-1111-1111",
       postalCode: "103-0027",
     },
-    id: "RK-20260602-004",
+    id: "202606020004",
     deliveryDate: "2026-06-02",
     deliveryTime: "18時",
     items: [
@@ -89,7 +89,7 @@ export const mockOrders: OrderHistory[] = [
       phone: "090-2222-2222",
       postalCode: "105-0011",
     },
-    id: "RK-20260521-002",
+    id: "202605210002",
     deliveryDate: "2026-05-21",
     deliveryTime: "19時",
     items: [
