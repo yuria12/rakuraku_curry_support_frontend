@@ -5,10 +5,9 @@ import { getOrderHistoryListData } from "@/lib/order-data";
 import type { OrderHistory } from "@/types/order";
 
 const deliveryStatuses = [
-  { className: "order-history-card__status--delivered", label: "配送完了" },
-  { className: "order-history-card__status--delivered", label: "配送完了" },
-  { className: "order-history-card__status--shipping", label: "配送中" },
   { className: "order-history-card__status--preparing", label: "配送準備中" },
+  { className: "order-history-card__status--shipping", label: "配送中" },
+  { className: "order-history-card__status--delivered", label: "配送完了" },
 ] as const;
 
 function formatDate(date: string) {
