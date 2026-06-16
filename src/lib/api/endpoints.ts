@@ -27,4 +27,7 @@ export const apiEndpoints = {
     byId: (id: string) => `/api/products/${id}`,
     detailMock: "/api/products-detail",
   },
+  toppings: {
+    base: "/api/toppings",
+  },
 } as const;

@@ -1,11 +1,14 @@
 import { resolveDataSource } from "@/lib/api/data-source";
 import {
+  addCartItem as addCartItemApi,
   deleteCartItem as deleteCartItemApi,
   getCart,
   updateCartItemQuantity as updateCartItemQuantityApi,
 } from "@/lib/api/cart";
-import type { ApiCart, ApiCartItem } from "@/lib/api/types";
+import type { AddCartItemRequest, ApiCart, ApiCartItem } from "@/lib/api/types";
 import { mockCartItems } from "@/mocks/cart";
+import { mockProducts } from "@/mocks/products";
+import { mockToppings } from "@/mocks/toppings";
 import type { CartItem } from "@/types/cart";
 
 export type CartData = Readonly<{
@@ -85,6 +88,39 @@ export function getCartData(): Promise<CartData> {
   return resolveDataSource<CartData>({
     api: async () => mapApiCartToCartData(await getCart()),
     mock: getMockCartData,
+  });
+}
+
+function addMockCartItem(request: AddCartItemRequest) {
+  const product = mockProducts.find(
+    (item) => String(item.id) === String(request.productId),
+  );
+
+  if (!product) {
+    return;
+  }
+
+  const toppings = mockToppings.filter((topping) =>
+    request.toppingIds?.includes(String(topping.id)),
+  );
+  const nextId =
+    Math.max(0, ...mockCartItems.map((item) => Number(item.id) || 0)) + 1;
+
+  mockCartItems.push({
+    id: nextId,
+    product,
+    quantity: request.quantity,
+    size: request.size,
+    toppings,
+  });
+}
+
+export function addCartItem(request: AddCartItemRequest): Promise<void> {
+  return resolveDataSource<void>({
+    api: async () => {
+      await addCartItemApi(request);
+    },
+    mock: () => addMockCartItem(request),
   });
 }
 

@@ -325,6 +325,11 @@
   display: block;
 }
 
+.product-card__image-link .product-image-frame {
+  width: min(100%, 12rem);
+  margin-inline: auto;
+}
+
 .product-card__name {
   font-size: clamp(0.95rem, 2vw, 1.05rem);
 }
