@@ -3,6 +3,13 @@
   gap: clamp(1.25rem, 3vw, 2rem);
 }
 
+.orders-loading {
+  margin: 0;
+  padding-block: clamp(2rem, 8vw, 4rem);
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
 .orders-page__header {
   display: grid;
   justify-items: center;

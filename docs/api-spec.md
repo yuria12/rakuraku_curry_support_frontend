@@ -152,10 +152,29 @@
 - `GET /api/orders`
   - `id: string`
   - `orderedAt: string`
+  - `deliveryDate: string`
+  - `deliveryTime: string`
   - `status: string`
   - `total: number`
   - `items: array`
   - `shippingAddress: string`
+  - `paymentMethod: string`
+  - `paymentStatus: string`
+  - `customer.name: string`
+  - `customer.email: string`
+  - `customer.postalCode: string`
+  - `customer.address: string`
+  - `customer.phone: string`
+  - `items[].id: string`
+  - `items[].productId: string`
+  - `items[].name: string`
+  - `items[].imagePath: string`
+  - `items[].size: "M" | "L" | "—"`
+  - `items[].price: number`
+  - `items[].quantity: number`
+  - `items[].toppings[].id: string`
+  - `items[].toppings[].name: string`
+  - `items[].toppings[].price: number`
 - `GET /api/orders/{id}`
   - `GET /api/orders` の1件分と同じ構造
 
