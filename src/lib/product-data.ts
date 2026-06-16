@@ -1,23 +1,11 @@
 import { isApiRequestError } from "@/lib/api/client";
 import { resolveDataSource } from "@/lib/api/data-source";
 import { getProductById, getProducts } from "@/lib/api/products";
-import type { ApiProduct, ApiTopping } from "@/lib/api/types";
+import type { ApiProduct } from "@/lib/api/types";
 import { mockProducts } from "@/mocks/products";
 import type { Product } from "@/types/product";
-import type { Topping } from "@/types/topping";
-
-function mapApiToppingToTopping(topping: ApiTopping): Topping {
-  return {
-    id: topping.id,
-    name: topping.name,
-    priceL: topping.priceL,
-    priceM: topping.priceM,
-  };
-}
 
 function mapApiProductToProduct(product: ApiProduct): Product {
-  const toppings = product.toppings ?? product.toppingList;
-
   return {
     description: product.description,
     id: product.id,
@@ -25,7 +13,6 @@ function mapApiProductToProduct(product: ApiProduct): Product {
     name: product.name,
     priceL: product.priceL,
     priceM: product.priceM,
-    toppings: toppings?.map(mapApiToppingToTopping),
   };
 }
 

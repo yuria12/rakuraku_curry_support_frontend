@@ -28,8 +28,6 @@ export type ApiProduct = Readonly<{
   priceL: number;
   priceM: number;
   spiceLevel: number;
-  toppingList?: ApiTopping[];
-  toppings?: ApiTopping[];
 }>;
 
 export type ApiTopping = Readonly<{

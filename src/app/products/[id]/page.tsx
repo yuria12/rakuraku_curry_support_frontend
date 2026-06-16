@@ -8,7 +8,7 @@ import {
   getProductDetailData,
   getProductStaticParams,
 } from "@/lib/product-data";
-import { mockToppings } from "@/mocks/toppings";
+import { getToppingListData } from "@/lib/topping-data";
 import { addProductToCartAction } from "./actions";
 
 type ProductDetailPageProps = Readonly<{
@@ -31,8 +31,8 @@ export default async function ProductDetailPage({
     notFound();
   }
 
+  const toppings = await getToppingListData();
   const quantity = 1;
-  const toppings = product.toppings?.length ? product.toppings : mockToppings;
   const totalPriceM = product.priceM * quantity;
   const totalPriceL = product.priceL * quantity;
 

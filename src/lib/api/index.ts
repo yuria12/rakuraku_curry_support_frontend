@@ -7,4 +7,5 @@ export * from "@/lib/api/data-source";
 export * from "@/lib/api/endpoints";
 export * from "@/lib/api/orders";
 export * from "@/lib/api/products";
+export * from "@/lib/api/toppings";
 export * from "@/lib/api/types";
