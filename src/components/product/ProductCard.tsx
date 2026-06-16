@@ -9,17 +9,15 @@ type ProductCardProps = Readonly<{
 export function ProductCard({ product }: ProductCardProps) {
   return (
     <article className="product-card">
-      <Link className="product-card__image-link" href={`/products/${product.id}`}>
+      <Link className="product-card__link" href={`/products/${product.id}`}>
         <ProductImage alt={product.name} src={product.imagePath} />
+        <span className="product-card__name">{product.name}</span>
+        <span className="product-card__prices">
+          <span>M</span> ¥{product.priceM.toLocaleString()}
+          <br />
+          <span>L</span> ¥{product.priceL.toLocaleString()}
+        </span>
       </Link>
-      <Link className="product-card__name" href={`/products/${product.id}`}>
-        {product.name}
-      </Link>
-      <p className="product-card__prices">
-        <span>M</span> ¥{product.priceM.toLocaleString()}
-        <br />
-        <span>L</span> ¥{product.priceL.toLocaleString()}
-      </p>
     </article>
   );
 }
