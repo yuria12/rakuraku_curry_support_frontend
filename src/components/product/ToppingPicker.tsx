@@ -5,23 +5,41 @@ import { Button } from "@/components/common/Button";
 import type { Topping } from "@/types/topping";
 
 type ToppingPickerProps = Readonly<{
+  selectedIds?: string[];
+  onSelectedIdsChange?: (selectedIds: string[]) => void;
   toppings: Topping[];
 }>;
 
-export function ToppingPicker({ toppings }: ToppingPickerProps) {
+export function ToppingPicker({
+  selectedIds,
+  onSelectedIdsChange,
+  toppings,
+}: ToppingPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [internalSelectedIds, setInternalSelectedIds] = useState<string[]>([]);
+  const currentSelectedIds = selectedIds ?? internalSelectedIds;
 
-  const selectedCount = selectedIds.length;
+  const selectedCount = currentSelectedIds.length;
+  const selectedSummary =
+    selectedCount > 0
+      ? toppings
+          .filter((topping) => currentSelectedIds.includes(String(topping.id)))
+          .map((topping) => topping.name)
+          .join("、")
+      : "未選択";
 
   function toggleTopping(topping: Topping) {
     const id = String(topping.id);
+    const nextSelectedIds = currentSelectedIds.includes(id)
+      ? currentSelectedIds.filter((selectedId) => selectedId !== id)
+      : [...currentSelectedIds, id];
 
-    setSelectedIds((current) =>
-      current.includes(id)
-        ? current.filter((selectedId) => selectedId !== id)
-        : [...current, id],
-    );
+    if (onSelectedIdsChange) {
+      onSelectedIdsChange(nextSelectedIds);
+      return;
+    }
+
+    setInternalSelectedIds(nextSelectedIds);
   }
 
   useEffect(() => {
@@ -50,15 +68,11 @@ export function ToppingPicker({ toppings }: ToppingPickerProps) {
         variant="secondary"
         onClick={() => setIsOpen(true)}
       >
-        トッピングを選択
+        トッピングを選択する
       </Button>
-      <p className="topping-picker__summary">
-        {selectedCount > 0
-          ? `選択中：${selectedCount}件`
-          : "トッピングは未選択です"}
-      </p>
+      <p className="topping-picker__summary">{selectedSummary}</p>
 
-      {selectedIds.map((id) => (
+      {currentSelectedIds.map((id) => (
         <input key={id} name="toppingIds" type="hidden" value={id} />
       ))}
 
@@ -79,7 +93,7 @@ export function ToppingPicker({ toppings }: ToppingPickerProps) {
             <div className="topping-picker__list">
               {toppings.map((topping) => {
                 const id = String(topping.id);
-                const checked = selectedIds.includes(id);
+                const checked = currentSelectedIds.includes(id);
 
                 return (
                   <label className="topping-choice" key={topping.id}>
