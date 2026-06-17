@@ -1,5 +1,9 @@
+import type { ButtonHTMLAttributes } from "react";
+
 type QuantityStepperProps = Readonly<{
   decrementDisabled?: boolean;
+  decrementButtonProps?: ButtonHTMLAttributes<HTMLButtonElement>;
+  incrementButtonProps?: ButtonHTMLAttributes<HTMLButtonElement>;
   onDecrement?: () => void;
   onIncrement?: () => void;
   value: number;
@@ -7,6 +11,8 @@ type QuantityStepperProps = Readonly<{
 
 export function QuantityStepper({
   decrementDisabled = false,
+  decrementButtonProps,
+  incrementButtonProps,
   onDecrement,
   onIncrement,
   value,
@@ -18,11 +24,17 @@ export function QuantityStepper({
         disabled={decrementDisabled}
         type="button"
         onClick={onDecrement}
+        {...decrementButtonProps}
       >
         -
       </button>
-      <span>{value}</span>
-      <button aria-label="数量を増やす" type="button" onClick={onIncrement}>
+      <span aria-label={`現在の数量：${value}`}>{value}</span>
+      <button
+        aria-label="数量を増やす"
+        type="button"
+        onClick={onIncrement}
+        {...incrementButtonProps}
+      >
         +
       </button>
     </div>

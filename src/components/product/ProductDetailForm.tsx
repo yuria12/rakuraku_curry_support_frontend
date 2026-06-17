@@ -51,7 +51,7 @@ export function ProductDetailForm({
       <input name="quantity" type="hidden" value={quantity} />
 
       <fieldset className="option-group option-group--size">
-        <legend>サイズ選択</legend>
+        <legend>サイズを選ぶ</legend>
         <div className="size-options">
           <label>
             <input
@@ -83,7 +83,9 @@ export function ProductDetailForm({
       </fieldset>
 
       <fieldset className="option-group option-group--toppings">
-        <legend>トッピング</legend>
+        <legend>
+          トッピングを選ぶ <span>(任意)</span>
+        </legend>
         <ToppingPicker
           selectedIds={selectedToppingIds}
           toppings={toppings}
@@ -94,7 +96,6 @@ export function ProductDetailForm({
       <div className="detail-quantity">
         <div>
           <span>数量</span>
-          <p>数量を選択してください</p>
         </div>
         <QuantityStepper
           decrementDisabled={quantity <= 1}
@@ -108,12 +109,18 @@ export function ProductDetailForm({
         />
       </div>
 
-      <p className="detail-total">
-        <span>選択内容にもとづく仮計算です</span>
-        合計 ¥{totalPrice.toLocaleString()}
-      </p>
+      <div className="product-detail__checkout">
+        <p className="detail-note">
+          ※ カート投入後の正式な金額はDB価格を使用します
+        </p>
+        <p className="detail-total">
+          合計金額 ¥{totalPrice.toLocaleString()}
+        </p>
 
-      <Button type="submit">カートに入れる</Button>
+        <Button className="product-detail__submit" type="submit">
+          カートに入れる
+        </Button>
+      </div>
     </form>
   );
 }

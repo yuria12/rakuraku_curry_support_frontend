@@ -72,28 +72,24 @@ export function CartItemSummary({
             {updateQuantityAction ? (
               <form
                 action={updateQuantityAction}
-                className="quantity-stepper"
+                className="cart-item-summary__quantity-form"
                 aria-label="数量"
               >
                 <input name="cartItemId" type="hidden" value={cartItemId} />
-                <button
-                  aria-label="数量を減らす"
-                  disabled={item.quantity <= 1}
-                  name="quantity"
-                  type="submit"
-                  value={nextDecrementQuantity}
-                >
-                  -
-                </button>
-                <span>{item.quantity}</span>
-                <button
-                  aria-label="数量を増やす"
-                  name="quantity"
-                  type="submit"
-                  value={nextIncrementQuantity}
-                >
-                  +
-                </button>
+                <QuantityStepper
+                  decrementButtonProps={{
+                    name: "quantity",
+                    type: "submit",
+                    value: nextDecrementQuantity,
+                  }}
+                  decrementDisabled={item.quantity <= 1}
+                  incrementButtonProps={{
+                    name: "quantity",
+                    type: "submit",
+                    value: nextIncrementQuantity,
+                  }}
+                  value={item.quantity}
+                />
               </form>
             ) : (
               <QuantityStepper value={item.quantity} />

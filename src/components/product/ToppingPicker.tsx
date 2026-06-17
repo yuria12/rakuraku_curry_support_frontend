@@ -20,6 +20,13 @@ export function ToppingPicker({
   const currentSelectedIds = selectedIds ?? internalSelectedIds;
 
   const selectedCount = currentSelectedIds.length;
+  const selectedSummary =
+    selectedCount > 0
+      ? toppings
+          .filter((topping) => currentSelectedIds.includes(String(topping.id)))
+          .map((topping) => topping.name)
+          .join("、")
+      : "未選択";
 
   function toggleTopping(topping: Topping) {
     const id = String(topping.id);
@@ -61,13 +68,9 @@ export function ToppingPicker({
         variant="secondary"
         onClick={() => setIsOpen(true)}
       >
-        トッピングを選択
+        トッピングを選択する
       </Button>
-      <p className="topping-picker__summary">
-        {selectedCount > 0
-          ? `選択中：${selectedCount}件`
-          : "トッピングは未選択です"}
-      </p>
+      <p className="topping-picker__summary">{selectedSummary}</p>
 
       {currentSelectedIds.map((id) => (
         <input key={id} name="toppingIds" type="hidden" value={id} />
