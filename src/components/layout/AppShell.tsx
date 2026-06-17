@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AuthNavLink } from "@/components/auth/AuthNavLink";
+import { NavLink } from "@/components/layout/NavLink";
 import { SiteLogo } from "@/components/layout/SiteLogo";
 import { getAuthSession } from "@/lib/auth-session";
 
@@ -25,9 +26,9 @@ export async function AppShell({ children }: AppShellProps) {
           </Link>
           <nav className="app-nav" aria-label="メインナビゲーション">
             {navItems.map((item) => (
-              <Link className="app-nav__link" href={item.href} key={item.href}>
+              <NavLink href={item.href} key={item.href}>
                 {item.label}
-              </Link>
+              </NavLink>
             ))}
             <AuthNavLink isLoggedIn={session.isLoggedIn} />
           </nav>
