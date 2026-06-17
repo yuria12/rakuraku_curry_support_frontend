@@ -4,13 +4,18 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { addCartItem } from "@/lib/cart-data";
 import type { CurrySize } from "@/lib/api/types";
+import { trimValue, validateQuantityValue } from "@/lib/form-validation";
 
-function getSize(value: FormDataEntryValue | null): CurrySize {
-  return value === "L" ? "L" : "M";
+function getSize(value: FormDataEntryValue | null): CurrySize | undefined {
+  if (value === "M" || value === "L") {
+    return value;
+  }
+
+  return undefined;
 }
 
 export async function addProductToCartAction(formData: FormData) {
-  const productId = String(formData.get("productId") ?? "");
+  const productId = trimValue(formData.get("productId"));
   const quantity = Number(formData.get("quantity") ?? 1);
   const size = getSize(formData.get("size"));
   const toppingIds = formData
@@ -18,7 +23,7 @@ export async function addProductToCartAction(formData: FormData) {
     .map((value) => String(value))
     .filter(Boolean);
 
-  if (!productId || !Number.isFinite(quantity) || quantity < 1) {
+  if (!productId || !size || validateQuantityValue(formData.get("quantity"))) {
     return;
   }
 
