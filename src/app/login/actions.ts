@@ -9,7 +9,19 @@ import {
 function getRedirectPath(value: FormDataEntryValue | null) {
   const redirectTo = String(value ?? "/products");
 
-  return redirectTo.startsWith("/") ? redirectTo : "/products";
+  return redirectTo.startsWith("/") && !redirectTo.startsWith("//")
+    ? redirectTo
+    : "/products";
+}
+
+function getLoginPath(error: "invalid" | "required", redirectTo: string) {
+  const params = new URLSearchParams({ error });
+
+  if (redirectTo !== "/products") {
+    params.set("redirectTo", redirectTo);
+  }
+
+  return `/login?${params.toString()}`;
 }
 
 export async function loginAction(formData: FormData) {
@@ -18,14 +30,14 @@ export async function loginAction(formData: FormData) {
   const redirectTo = getRedirectPath(formData.get("redirectTo"));
 
   if (!email || !password) {
-    redirect("/login?error=required");
+    redirect(getLoginPath("required", redirectTo));
   }
 
   try {
     const response = await authenticateUser(email, password);
     await saveAuthSession(response);
   } catch {
-    redirect("/login?error=invalid");
+    redirect(getLoginPath("invalid", redirectTo));
   }
 
   redirect(redirectTo);
