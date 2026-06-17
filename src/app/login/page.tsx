@@ -10,6 +10,7 @@ import { getAuthSession } from "@/lib/auth-session";
 type LoginPageProps = Readonly<{
   searchParams?: Promise<{
     error?: string;
+    registered?: string;
     redirectTo?: string;
   }>;
 }>;
@@ -35,6 +36,14 @@ function getLoginInfoMessage(redirectTo: string) {
   return undefined;
 }
 
+function getLoginSuccessMessage(registered?: string) {
+  if (registered === "success") {
+    return "会員登録が完了しました。ログインしてください。";
+  }
+
+  return undefined;
+}
+
 function getRedirectPath(value?: string) {
   return value?.startsWith("/") && !value.startsWith("//") ? value : "/products";
 }
@@ -45,6 +54,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   const redirectTo = getRedirectPath(params?.redirectTo);
   const errorMessage = getLoginErrorMessage(params?.error);
   const infoMessage = getLoginInfoMessage(redirectTo);
+  const successMessage = getLoginSuccessMessage(params?.registered);
 
   if (session.isLoggedIn) {
     redirect(redirectTo);
@@ -67,7 +77,10 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           {errorMessage ? (
             <Message variant="error">{errorMessage}</Message>
           ) : null}
-          {!errorMessage && infoMessage ? (
+          {!errorMessage && successMessage ? (
+            <Message variant="success">{successMessage}</Message>
+          ) : null}
+          {!errorMessage && !successMessage && infoMessage ? (
             <Message variant="info">{infoMessage}</Message>
           ) : null}
           <TextInput
