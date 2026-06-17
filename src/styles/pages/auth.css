@@ -43,12 +43,84 @@
 }
 
 .auth-form--register {
-  width: min(100%, 23rem);
-  gap: 0.75rem;
+  width: min(100%, 540px);
+  gap: 0.7rem;
+  justify-items: stretch;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: clamp(1.25rem, 4vw, 2rem);
+  background: var(--color-surface);
+}
+
+.auth-form--register .field {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.auth-form--register .field__label {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.auth-form--register .text-input {
+  min-height: 2.35rem;
+}
+
+.auth-form--register .text-input::placeholder {
+  color: #999999;
+}
+
+.auth-form--register .field__label::after {
+  content: "必須";
+  display: inline-flex;
+  align-items: center;
+  min-height: 1rem;
+  margin-inline-start: 0.55rem;
+  border: 1px solid var(--color-danger);
+  border-radius: 3px;
+  padding-inline: 0.25rem;
+  color: var(--color-danger);
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.auth-form--register .message {
+  width: 100%;
+}
+
+.auth-postal {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 1rem;
+  align-items: end;
+}
+
+.auth-postal .field {
+  min-width: 0;
+}
+
+.auth-postal button {
+  min-height: 2.35rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding-inline: 1rem;
+  background: var(--color-surface);
+  color: var(--color-primary-strong);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.auth-form__note {
+  margin: -0.2rem 0 0;
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  line-height: 1.5;
 }
 
 .auth-form--register .button {
-  margin-block-start: 0.35rem;
+  margin-block-start: 0.55rem;
+  justify-self: center;
 }
 
 .auth-divider {
@@ -108,6 +180,15 @@
 
     .auth-form--register {
       width: 100%;
+    }
+
+    .auth-postal {
+      grid-template-columns: 1fr;
+      gap: 0.65rem;
+    }
+
+    .auth-postal button {
+      justify-self: start;
     }
 
     .auth-divider {
