@@ -49,14 +49,10 @@ export function HeaderUserMenu({ userName }: HeaderUserMenuProps) {
             <span className="header-user-menu__item-icon header-user-menu__item-icon--orders" />
             注文履歴
           </Link>
-          <span
-            aria-disabled="true"
-            className="header-user-menu__item header-user-menu__item--disabled"
-            role="menuitem"
-          >
+          <Link className="header-user-menu__item" href="/account" role="menuitem">
             <span className="header-user-menu__item-icon header-user-menu__item-icon--account" />
             アカウント情報
-          </span>
+          </Link>
           <Link className="header-user-menu__item" href="/logout" role="menuitem">
             <span className="header-user-menu__item-icon header-user-menu__item-icon--logout" />
             ログアウト

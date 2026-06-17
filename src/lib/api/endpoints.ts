@@ -30,4 +30,7 @@ export const apiEndpoints = {
   toppings: {
     base: "/api/toppings",
   },
+  user: {
+    current: "/api/users/me",
+  },
 } as const;

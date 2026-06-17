@@ -15,6 +15,13 @@ export type ApiUser = Readonly<{
   role: UserRole;
 }>;
 
+export type ApiUserProfile = ApiUser &
+  Readonly<{
+    address: string;
+    phone: string;
+    postalCode: string;
+  }>;
+
 export type ApiAdminUser = ApiUser &
   Readonly<{
     isActive: boolean;

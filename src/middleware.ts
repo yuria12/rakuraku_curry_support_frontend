@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { authTokenCookieName } from "@/lib/auth-constants";
 
-const protectedRoutes = ["/orders", "/logout"];
+const protectedRoutes = ["/account", "/orders", "/logout"];
 
 function isProtectedRoute(pathname: string) {
   return protectedRoutes.some((route) => {
@@ -30,5 +30,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/orders/:path*", "/logout"],
+  matcher: ["/account/:path*", "/account", "/orders/:path*", "/logout"],
 };

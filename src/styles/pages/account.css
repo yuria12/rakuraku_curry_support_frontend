@@ -1,0 +1,125 @@
+.account-page {
+  max-width: 58rem;
+  margin-inline: auto;
+}
+
+.account-page__header {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.account-page__header h1 {
+  margin-block-end: 0;
+}
+
+.account-page__eyebrow {
+  margin-block-end: 0.35rem;
+  color: var(--color-primary);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.account-page__edit-status {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.5rem 0.85rem;
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.account-page__edit-status-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--color-text-hint);
+}
+
+.account-profile-card {
+  overflow: hidden;
+}
+
+.account-profile-card__body {
+  padding: clamp(1.2rem, 4vw, 2rem);
+}
+
+.account-profile-list {
+  display: grid;
+  margin: 0;
+}
+
+.account-profile-list__row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 13rem) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  border-bottom: 1px solid var(--color-border);
+  padding-block: 1rem;
+}
+
+.account-profile-list__row:first-child {
+  padding-block-start: 0;
+}
+
+.account-profile-list__row:last-child {
+  border-bottom: 0;
+  padding-block-end: 0;
+}
+
+.account-profile-list dt {
+  color: var(--color-text-muted);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.account-profile-list dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.account-profile-card__footer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--color-border);
+  padding: 1rem clamp(1.2rem, 4vw, 2rem);
+  background: var(--color-primary-soft);
+}
+
+.account-profile-card__footer p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+@media (max-width: 620px) {
+  .account-page__header,
+  .account-profile-card__footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .account-page__edit-status {
+    width: fit-content;
+  }
+
+  .account-profile-list__row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+}
