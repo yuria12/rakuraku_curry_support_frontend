@@ -1,10 +1,6 @@
 import { redirect } from "next/navigation";
-import { loginAction } from "@/app/login/actions";
-import { Button, ButtonLink } from "@/components/common/Button";
+import { LoginForm } from "@/components/auth/LoginForm";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
-import { Message } from "@/components/common/Message";
-import { PasswordInput } from "@/components/common/PasswordInput";
-import { TextInput } from "@/components/common/TextInput";
 import { getAuthSession } from "@/lib/auth-session";
 
 type LoginPageProps = Readonly<{
@@ -16,13 +12,15 @@ type LoginPageProps = Readonly<{
 }>;
 
 const loginErrorMessages = {
-  invalid: "メールアドレスまたはパスワードが正しくありません。",
-  required: "メールアドレスとパスワードを入力してください。",
+  invalid: "メールアドレス、またはパスワードが間違っています",
+  invalidEmail: "メールアドレスの形式が不正です",
+  requiredEmail: "メールアドレスを入力してください",
+  requiredPassword: "パスワードを入力してください",
 } as const;
 
 function getLoginErrorMessage(error?: string) {
-  if (error === "invalid" || error === "required") {
-    return loginErrorMessages[error];
+  if (error && error in loginErrorMessages) {
+    return loginErrorMessages[error as keyof typeof loginErrorMessages];
   }
 
   return undefined;
@@ -72,43 +70,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       <div className="auth-panel">
         <h1>ログイン</h1>
 
-        <form className="auth-form" action={loginAction}>
-          <input name="redirectTo" type="hidden" value={redirectTo} />
-          {errorMessage ? (
-            <Message variant="error">{errorMessage}</Message>
-          ) : null}
-          {!errorMessage && successMessage ? (
-            <Message variant="success">{successMessage}</Message>
-          ) : null}
-          {!errorMessage && !successMessage && infoMessage ? (
-            <Message variant="info">{infoMessage}</Message>
-          ) : null}
-          <TextInput
-            autoComplete="email"
-            id="email"
-            label="メールアドレス："
-            name="email"
-            type="email"
-          />
-          <PasswordInput
-            autoComplete="current-password"
-            id="password"
-            label="パスワード："
-            name="password"
-          />
-          <Button type="submit">ログインする</Button>
-        </form>
-
-        <div className="auth-divider">
-          <span>または</span>
-        </div>
-
-        <div className="auth-action">
-          <p>初めての方はこちら</p>
-          <ButtonLink href="/register" size="sm" variant="secondary">
-            会員登録する
-          </ButtonLink>
-        </div>
+        <LoginForm
+          errorMessage={errorMessage}
+          infoMessage={infoMessage}
+          redirectTo={redirectTo}
+          successMessage={successMessage}
+        />
       </div>
     </section>
   );

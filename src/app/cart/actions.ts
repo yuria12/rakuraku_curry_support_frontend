@@ -5,12 +5,13 @@ import {
   deleteCartItem,
   updateCartItemQuantity,
 } from "@/lib/cart-data";
+import { trimValue, validateQuantityValue } from "@/lib/form-validation";
 
 export async function updateCartItemQuantityAction(formData: FormData) {
-  const id = String(formData.get("cartItemId") ?? "");
+  const id = trimValue(formData.get("cartItemId"));
   const quantity = Number(formData.get("quantity"));
 
-  if (!id || !Number.isFinite(quantity) || quantity < 1) {
+  if (!id || validateQuantityValue(formData.get("quantity"))) {
     return;
   }
 
@@ -20,7 +21,7 @@ export async function updateCartItemQuantityAction(formData: FormData) {
 }
 
 export async function deleteCartItemAction(formData: FormData) {
-  const id = String(formData.get("cartItemId") ?? "");
+  const id = trimValue(formData.get("cartItemId"));
 
   if (!id) {
     return;

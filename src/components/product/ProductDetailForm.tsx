@@ -2,9 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { Button } from "@/components/common/Button";
+import { FieldError, Message } from "@/components/common/Message";
 import { QuantityStepper } from "@/components/common/QuantityStepper";
 import { ToppingPicker } from "@/components/product/ToppingPicker";
 import type { CurrySize } from "@/lib/api/types";
+import { validateQuantityValue, validationMessages } from "@/lib/form-validation";
 import type { Product } from "@/types/product";
 import type { Topping } from "@/types/topping";
 
@@ -30,6 +32,8 @@ export function ProductDetailForm({
   const [size, setSize] = useState<CurrySize>("M");
   const [selectedToppingIds, setSelectedToppingIds] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(1);
+  const [formError, setFormError] = useState<string>();
+  const [quantityError, setQuantityError] = useState<string>();
 
   const selectedToppings = useMemo(() => {
     return toppings.filter((topping) =>
@@ -46,7 +50,30 @@ export function ProductDetailForm({
   }, [product, quantity, selectedToppings, size]);
 
   return (
-    <form action={action} className="product-detail__form">
+    <form
+      action={action}
+      className="product-detail__form"
+      noValidate
+      onSubmit={(event) => {
+        const formData = new FormData(event.currentTarget);
+        const productId = String(formData.get("productId") ?? "").trim();
+        const sizeValue = String(formData.get("size") ?? "").trim();
+        const nextQuantityError = validateQuantityValue(formData.get("quantity"));
+
+        setFormError(undefined);
+        setQuantityError(nextQuantityError);
+
+        if (!productId || !sizeValue || nextQuantityError) {
+          event.preventDefault();
+          setFormError(
+            !productId || !sizeValue
+              ? "カートへの追加に失敗しました"
+              : undefined,
+          );
+        }
+      }}
+    >
+      {formError ? <Message variant="error">{formError}</Message> : null}
       <input name="productId" type="hidden" value={String(product.id)} />
       <input name="quantity" type="hidden" value={quantity} />
 
@@ -101,12 +128,21 @@ export function ProductDetailForm({
           decrementDisabled={quantity <= 1}
           value={quantity}
           onDecrement={() =>
-            setQuantity((currentQuantity) => Math.max(1, currentQuantity - 1))
+            setQuantity((currentQuantity) => {
+              setQuantityError(undefined);
+              return Math.max(1, currentQuantity - 1);
+            })
           }
           onIncrement={() =>
-            setQuantity((currentQuantity) => currentQuantity + 1)
+            setQuantity((currentQuantity) => {
+              setQuantityError(undefined);
+              return currentQuantity + 1;
+            })
           }
         />
+        {quantityError ? (
+          <FieldError>{validationMessages.quantityRequired}</FieldError>
+        ) : null}
       </div>
 
       <div className="product-detail__checkout">

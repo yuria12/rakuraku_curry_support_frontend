@@ -1,8 +1,16 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { isApiRequestError } from "@/lib/api/client";
 import { registerUser } from "@/lib/api/auth";
+import { isApiRequestError } from "@/lib/api/client";
+import {
+  trimValue,
+  validateEmail,
+  validatePassword,
+  validatePhone,
+  validatePostalCode,
+  validateRequired,
+} from "@/lib/form-validation";
 
 type RegisterError =
   | "duplicate"
@@ -10,35 +18,29 @@ type RegisterError =
   | "invalidEmail"
   | "invalidPhone"
   | "invalidPostalCode"
+  | "passwordLength"
   | "passwordMismatch"
+  | "passwordPolicy"
   | "required";
-
-const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const phonePattern = /^\d{2,4}-\d{2,4}-\d{3,4}$/;
-const postalCodePattern = /^\d{3}-\d{4}$/;
-
-function getStringValue(formData: FormData, name: string) {
-  return String(formData.get(name) ?? "").trim();
-}
 
 function getRegisterPath(error: RegisterError) {
   return `/register?error=${error}`;
 }
 
 export async function registerAction(formData: FormData) {
-  const name = getStringValue(formData, "name");
-  const email = getStringValue(formData, "email");
-  const postalCode = getStringValue(formData, "postalCode");
-  const address = getStringValue(formData, "address");
-  const phone = getStringValue(formData, "phone");
-  const password = getStringValue(formData, "password");
-  const passwordConfirmation = getStringValue(formData, "passwordConfirmation");
+  const name = trimValue(formData.get("name"));
+  const email = trimValue(formData.get("email"));
+  const postalCode = trimValue(formData.get("postalCode"));
+  const address = trimValue(formData.get("address"));
+  const phone = trimValue(formData.get("phone"));
+  const password = trimValue(formData.get("password"));
+  const passwordConfirmation = trimValue(formData.get("passwordConfirmation"));
 
   if (
-    !name ||
+    validateRequired(name, "名前") ||
     !email ||
     !postalCode ||
-    !address ||
+    validateRequired(address, "住所") ||
     !phone ||
     !password ||
     !passwordConfirmation
@@ -46,16 +48,26 @@ export async function registerAction(formData: FormData) {
     redirect(getRegisterPath("required"));
   }
 
-  if (!emailPattern.test(email)) {
+  if (validateEmail(email)) {
     redirect(getRegisterPath("invalidEmail"));
   }
 
-  if (!postalCodePattern.test(postalCode)) {
+  if (validatePostalCode(postalCode)) {
     redirect(getRegisterPath("invalidPostalCode"));
   }
 
-  if (!phonePattern.test(phone)) {
+  if (validatePhone(phone)) {
     redirect(getRegisterPath("invalidPhone"));
+  }
+
+  const passwordError = validatePassword(password);
+
+  if (passwordError === "パスワードは８文字以上１６文字以内で設定してください") {
+    redirect(getRegisterPath("passwordLength"));
+  }
+
+  if (passwordError) {
+    redirect(getRegisterPath("passwordPolicy"));
   }
 
   if (password !== passwordConfirmation) {

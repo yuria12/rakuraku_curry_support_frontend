@@ -54,6 +54,10 @@
   font-weight: 500;
 }
 
+.checkout-form .field__message {
+  grid-column: 2;
+}
+
 .checkout-postal {
   display: grid;
   grid-template-columns: minmax(0, 1fr) max-content;
@@ -63,6 +67,10 @@
 
 .checkout-postal .field {
   grid-template-columns: 7.5rem minmax(0, 1fr);
+}
+
+.checkout-postal .field__message {
+  grid-column: 2;
 }
 
 .checkout-postal button {
@@ -233,6 +241,11 @@
     .checkout-radio-field,
     .checkout-postal {
       grid-template-columns: 1fr;
+    }
+
+    .checkout-form .field__message,
+    .checkout-postal .field__message {
+      grid-column: auto;
     }
 
     .checkout-time-options {
