@@ -17,6 +17,7 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
+  box-shadow: var(--shadow-card);
 }
 
 .checkout-section {
@@ -75,12 +76,20 @@
 
 .checkout-postal button {
   min-height: 1.8rem;
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding-inline: 0.75rem;
   background: var(--color-surface);
+  color: var(--color-primary-strong);
   cursor: pointer;
   font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.checkout-postal button:hover,
+.checkout-postal button:focus-visible {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
 }
 
 .checkout-time-options {
@@ -185,7 +194,10 @@
   justify-items: center;
   gap: clamp(2rem, 6vw, 3.5rem);
   padding: clamp(1.5rem, 6vw, 3rem) clamp(1rem, 5vw, 3rem);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
   background: var(--color-surface);
+  box-shadow: var(--shadow-card);
   text-align: center;
 }
 

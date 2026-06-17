@@ -1,9 +1,9 @@
-import Link from "next/link";
+import { NavLink } from "@/components/layout/NavLink";
 
 export function AuthNavLink({ isLoggedIn }: Readonly<{ isLoggedIn: boolean }>) {
   return (
-    <Link className="app-nav__link" href={isLoggedIn ? "/logout" : "/login"}>
+    <NavLink href={isLoggedIn ? "/logout" : "/login"}>
       {isLoggedIn ? "ログアウト" : "ログイン"}
-    </Link>
+    </NavLink>
   );
 }

@@ -38,9 +38,11 @@
   gap: 1rem;
   width: min(100%, 40rem);
   margin-inline: auto;
-  border: 2px solid var(--color-border-strong);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: clamp(1rem, 4vw, 2rem);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
 }
 
 .product-preview-grid {
@@ -52,6 +54,11 @@
 .product-preview-card {
   display: grid;
   gap: 0.65rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.9rem;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
   text-align: center;
 }
 
