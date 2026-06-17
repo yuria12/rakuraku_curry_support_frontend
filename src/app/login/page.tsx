@@ -27,11 +27,24 @@ function getLoginErrorMessage(error?: string) {
   return undefined;
 }
 
+function getLoginInfoMessage(redirectTo: string) {
+  if (redirectTo.startsWith("/orders/confirm")) {
+    return "注文確認へ進むにはログインしてください。";
+  }
+
+  return undefined;
+}
+
+function getRedirectPath(value?: string) {
+  return value?.startsWith("/") && !value.startsWith("//") ? value : "/products";
+}
+
 export default async function LoginPage({ searchParams }: LoginPageProps) {
   const session = await getAuthSession();
   const params = await searchParams;
-  const redirectTo = params?.redirectTo ?? "/products";
+  const redirectTo = getRedirectPath(params?.redirectTo);
   const errorMessage = getLoginErrorMessage(params?.error);
+  const infoMessage = getLoginInfoMessage(redirectTo);
 
   if (session.isLoggedIn) {
     redirect(redirectTo);
@@ -47,12 +60,15 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       />
 
       <div className="auth-panel">
-        <h1>2段階認証</h1>
+        <h1>ログイン</h1>
 
         <form className="auth-form" action={loginAction}>
           <input name="redirectTo" type="hidden" value={redirectTo} />
           {errorMessage ? (
             <Message variant="error">{errorMessage}</Message>
+          ) : null}
+          {!errorMessage && infoMessage ? (
+            <Message variant="info">{infoMessage}</Message>
           ) : null}
           <TextInput
             autoComplete="email"
