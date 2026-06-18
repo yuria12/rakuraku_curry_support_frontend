@@ -1,6 +1,7 @@
 import { OrderConfirmForm } from "@/components/checkout/OrderConfirmForm";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
 import { getOrderConfirmData } from "@/lib/order-confirm-data";
+import { createOrderAction } from "./actions";
 
 export default async function OrderConfirmPage() {
   const orderConfirm = await getOrderConfirmData();
@@ -15,7 +16,7 @@ export default async function OrderConfirmPage() {
         ]}
       />
 
-      <OrderConfirmForm orderConfirm={orderConfirm} />
+      <OrderConfirmForm action={createOrderAction} orderConfirm={orderConfirm} />
     </section>
   );
 }

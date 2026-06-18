@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CartItemSummary } from "@/components/cart/CartItemSummary";
 import { Button, ButtonLink } from "@/components/common/Button";
@@ -41,11 +40,11 @@ type CheckoutField =
 type CheckoutErrors = Partial<Record<CheckoutField, string>>;
 
 type OrderConfirmFormProps = Readonly<{
+  action: (formData: FormData) => void | Promise<void>;
   orderConfirm: OrderConfirmData;
 }>;
 
-export function OrderConfirmForm({ orderConfirm }: OrderConfirmFormProps) {
-  const router = useRouter();
+export function OrderConfirmForm({ action, orderConfirm }: OrderConfirmFormProps) {
   const { cart, customer } = orderConfirm;
   const [errors, setErrors] = useState<CheckoutErrors>({});
   const [deliveryTime, setDeliveryTime] = useState("");
@@ -83,14 +82,13 @@ export function OrderConfirmForm({ orderConfirm }: OrderConfirmFormProps) {
       <section className="checkout-section" aria-label="配送情報">
         <h1>配送情報</h1>
         <form
+          action={action}
           className="checkout-form"
           id="order-confirm-form"
           noValidate
           onSubmit={(event) => {
-            event.preventDefault();
-
-            if (validate(new FormData(event.currentTarget))) {
-              router.push("/orders/complete");
+            if (!validate(new FormData(event.currentTarget))) {
+              event.preventDefault();
             }
           }}
         >
