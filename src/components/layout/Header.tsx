@@ -2,16 +2,37 @@ import Link from "next/link";
 import { NavLink } from "@/components/layout/NavLink";
 import { HeaderUserMenu } from "@/components/layout/HeaderUserMenu";
 import { SiteLogo } from "@/components/layout/SiteLogo";
+import { isApiRequestError } from "@/lib/api/client";
 import { getAuthSession } from "@/lib/auth-session";
 import { getCartData } from "@/lib/cart-data";
+
+type HeaderCartData = Awaited<ReturnType<typeof getCartData>>;
 
 function getCartItemCount(items: Awaited<ReturnType<typeof getCartData>>["items"]) {
   return items.reduce((total, item) => total + item.quantity, 0);
 }
 
+async function getHeaderCartData(session: Awaited<ReturnType<typeof getAuthSession>>) {
+  if (!session.isLoggedIn) {
+    return { cart: { items: [] } as Pick<HeaderCartData, "items">, isSessionExpired: false };
+  }
+
+  try {
+    return { cart: await getCartData(), isSessionExpired: false };
+  } catch (error) {
+    if (isApiRequestError(error) && error.status === 401) {
+      return { cart: { items: [] } as Pick<HeaderCartData, "items">, isSessionExpired: true };
+    }
+
+    throw error;
+  }
+}
+
 export async function Header() {
-  const [session, cart] = await Promise.all([getAuthSession(), getCartData()]);
+  const session = await getAuthSession();
+  const { cart, isSessionExpired } = await getHeaderCartData(session);
   const cartItemCount = getCartItemCount(cart.items);
+  const isLoggedIn = session.isLoggedIn && !isSessionExpired;
   const userName = session.user?.name ?? "ユーザー";
 
   return (
@@ -32,7 +53,7 @@ export async function Header() {
             </span>
             <span>カート</span>
           </NavLink>
-          {session.isLoggedIn ? (
+          {isLoggedIn ? (
             <HeaderUserMenu userName={userName} />
           ) : (
             <NavLink href="/login">ログイン</NavLink>

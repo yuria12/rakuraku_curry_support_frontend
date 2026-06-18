@@ -5,10 +5,29 @@ import {
 import { CartItemSummary } from "@/components/cart/CartItemSummary";
 import { ButtonLink } from "@/components/common/Button";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
+import { isApiRequestError } from "@/lib/api/client";
+import { getAuthSession } from "@/lib/auth-session";
 import { getCartData } from "@/lib/cart-data";
+import { redirect } from "next/navigation";
 
 export default async function CartPage() {
-  const cart = await getCartData();
+  const session = await getAuthSession();
+
+  if (!session.isLoggedIn) {
+    redirect("/login?redirectTo=/cart");
+  }
+
+  let cart;
+
+  try {
+    cart = await getCartData();
+  } catch (error) {
+    if (isApiRequestError(error) && error.status === 401) {
+      redirect("/auth/session-expired?redirectTo=/cart");
+    }
+
+    throw error;
+  }
 
   return (
     <section className="cart-page">
