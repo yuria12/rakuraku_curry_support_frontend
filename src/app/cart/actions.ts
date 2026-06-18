@@ -1,11 +1,21 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import {
   deleteCartItem,
   updateCartItemQuantity,
 } from "@/lib/cart-data";
+import { isApiRequestError } from "@/lib/api/client";
 import { trimValue, validateQuantityValue } from "@/lib/form-validation";
+
+function redirectToLoginOnUnauthorized(error: unknown): never {
+  if (isApiRequestError(error) && error.status === 401) {
+    redirect("/auth/session-expired?redirectTo=/cart");
+  }
+
+  throw error;
+}
 
 export async function updateCartItemQuantityAction(formData: FormData) {
   const id = trimValue(formData.get("cartItemId"));
@@ -15,7 +25,12 @@ export async function updateCartItemQuantityAction(formData: FormData) {
     return;
   }
 
-  await updateCartItemQuantity(id, quantity);
+  try {
+    await updateCartItemQuantity(id, quantity);
+  } catch (error) {
+    redirectToLoginOnUnauthorized(error);
+  }
+
   revalidatePath("/cart");
   revalidatePath("/orders/confirm");
 }
@@ -27,7 +42,12 @@ export async function deleteCartItemAction(formData: FormData) {
     return;
   }
 
-  await deleteCartItem(id);
+  try {
+    await deleteCartItem(id);
+  } catch (error) {
+    redirectToLoginOnUnauthorized(error);
+  }
+
   revalidatePath("/cart");
   revalidatePath("/orders/confirm");
 }

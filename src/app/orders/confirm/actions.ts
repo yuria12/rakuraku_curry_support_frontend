@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { isApiRequestError } from "@/lib/api/client";
 import { createOrder } from "@/lib/api/orders";
 import { resolveDataSource } from "@/lib/api/data-source";
 import { getBackendSessionRequestInit } from "@/lib/auth-session";
@@ -87,6 +88,14 @@ function createMockOrder(formData: FormData, cart: Awaited<ReturnType<typeof get
   mockCartItems.splice(0);
 }
 
+function redirectToLoginOnUnauthorized(error: unknown): never {
+  if (isApiRequestError(error) && error.status === 401) {
+    redirect("/auth/session-expired?redirectTo=/orders/confirm");
+  }
+
+  throw error;
+}
+
 export async function createOrderAction(formData: FormData) {
   const errors = validateOrderForm(formData);
 
@@ -94,24 +103,34 @@ export async function createOrderAction(formData: FormData) {
     return;
   }
 
-  const cart = await getCartData();
+  let cart;
+
+  try {
+    cart = await getCartData();
+  } catch (error) {
+    redirectToLoginOnUnauthorized(error);
+  }
 
   if (cart.items.length === 0) {
     redirect("/cart");
   }
 
-  await resolveDataSource<void>({
-    api: async () => {
-      await createOrder(
-        {
-          paymentMethod: trimValue(formData.get("paymentMethod")),
-          shippingAddress: trimValue(formData.get("address")),
-        },
-        await getBackendSessionRequestInit(),
-      );
-    },
-    mock: () => createMockOrder(formData, cart),
-  });
+  try {
+    await resolveDataSource<void>({
+      api: async () => {
+        await createOrder(
+          {
+            paymentMethod: trimValue(formData.get("paymentMethod")),
+            shippingAddress: trimValue(formData.get("address")),
+          },
+          await getBackendSessionRequestInit(),
+        );
+      },
+      mock: () => createMockOrder(formData, cart),
+    });
+  } catch (error) {
+    redirectToLoginOnUnauthorized(error);
+  }
 
   revalidatePath("/cart");
   revalidatePath("/orders");

@@ -8,20 +8,22 @@ import { getCartData } from "@/lib/cart-data";
 
 type HeaderCartData = Awaited<ReturnType<typeof getCartData>>;
 
+const emptyHeaderCart = { items: [] } as Pick<HeaderCartData, "items">;
+
 function getCartItemCount(items: Awaited<ReturnType<typeof getCartData>>["items"]) {
   return items.reduce((total, item) => total + item.quantity, 0);
 }
 
 async function getHeaderCartData(session: Awaited<ReturnType<typeof getAuthSession>>) {
   if (!session.isLoggedIn) {
-    return { cart: { items: [] } as Pick<HeaderCartData, "items">, isSessionExpired: false };
+    return { cart: emptyHeaderCart, isSessionExpired: false };
   }
 
   try {
     return { cart: await getCartData(), isSessionExpired: false };
   } catch (error) {
-    if (isApiRequestError(error) && error.status === 401) {
-      return { cart: { items: [] } as Pick<HeaderCartData, "items">, isSessionExpired: true };
+    if (isApiRequestError(error)) {
+      return { cart: emptyHeaderCart, isSessionExpired: error.status === 401 };
     }
 
     throw error;

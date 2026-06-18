@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { isApiRequestError } from "@/lib/api/client";
 import { addCartItem } from "@/lib/cart-data";
 import type { CurrySize } from "@/lib/api/types";
 import { trimValue, validateQuantityValue } from "@/lib/form-validation";
@@ -27,12 +28,22 @@ export async function addProductToCartAction(formData: FormData) {
     return;
   }
 
-  await addCartItem({
-    productId,
-    quantity,
-    size,
-    toppingIds,
-  });
+  try {
+    await addCartItem({
+      productId,
+      quantity,
+      size,
+      toppingIds,
+    });
+  } catch (error) {
+    if (isApiRequestError(error) && error.status === 401) {
+      redirect(
+        `/auth/session-expired?redirectTo=${encodeURIComponent(`/products/${productId}`)}`,
+      );
+    }
+
+    throw error;
+  }
 
   revalidatePath("/cart");
   revalidatePath("/orders/confirm");
