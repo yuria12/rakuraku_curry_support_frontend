@@ -2,6 +2,7 @@ import { isApiRequestError } from "@/lib/api/client";
 import { resolveDataSource } from "@/lib/api/data-source";
 import { getOrderById, getOrders } from "@/lib/api/orders";
 import type { ApiCartItem, ApiOrder } from "@/lib/api/types";
+import { getBackendSessionRequestInit } from "@/lib/auth-session";
 import { mockOrders } from "@/mocks/orders";
 import type { OrderHistory, OrderHistoryItem } from "@/types/order";
 
@@ -81,7 +82,10 @@ export function getOrderStaticParams() {
 
 export function getOrderHistoryListData(): Promise<OrderHistory[]> {
   return resolveDataSource<OrderHistory[]>({
-    api: async () => (await getOrders()).map(mapApiOrderToOrderHistory),
+    api: async () =>
+      (await getOrders(await getBackendSessionRequestInit())).map(
+        mapApiOrderToOrderHistory,
+      ),
     mock: () => mockOrders,
   });
 }
@@ -92,7 +96,9 @@ export function getOrderDetailData(
   return resolveDataSource<OrderHistory | undefined>({
     api: async () => {
       try {
-        return mapApiOrderToOrderHistory(await getOrderById(id));
+        return mapApiOrderToOrderHistory(
+          await getOrderById(id, await getBackendSessionRequestInit()),
+        );
       } catch (error) {
         if (isApiRequestError(error) && error.status === 404) {
           return undefined;

@@ -1,2 +1,2 @@
-export const authTokenCookieName = "rakuraku_auth_token";
+export const backendSessionCookieName = "JSESSIONID";
 export const authUserCookieName = "rakuraku_auth_user";

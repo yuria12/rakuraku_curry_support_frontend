@@ -13,6 +13,11 @@ type ApiRequestOptions = RequestInit &
     timeoutMs?: number;
   }>;
 
+export type ApiResponse<T> = Readonly<{
+  data: T;
+  response: Response;
+}>;
+
 export class ApiRequestError extends Error {
   body?: unknown;
   method?: string;
@@ -110,7 +115,10 @@ export function createApiClient(options: ApiClientOptions = {}) {
   const fetcher = options.fetcher ?? fetch;
   const timeoutMs = options.timeoutMs ?? apiConfig.requestTimeoutMs;
 
-  async function request<T>(path: string, init?: ApiRequestOptions): Promise<T> {
+  async function requestWithResponse<T>(
+    path: string,
+    init?: ApiRequestOptions,
+  ): Promise<ApiResponse<T>> {
     const controller = new AbortController();
     const externalSignal = init?.signal;
     const abortRequest = () => controller.abort();
@@ -146,7 +154,10 @@ export function createApiClient(options: ApiClientOptions = {}) {
         });
       }
 
-      return body as T;
+      return {
+        data: body as T,
+        response,
+      };
     } catch (error) {
       if (isApiRequestError(error)) {
         throw error;
@@ -170,21 +181,31 @@ export function createApiClient(options: ApiClientOptions = {}) {
 
   return {
     delete: <T>(path: string, init?: ApiRequestOptions) =>
-      request<T>(path, { ...init, method: "DELETE" }),
+      requestWithResponse<T>(path, { ...init, method: "DELETE" }).then(
+        ({ data }) => data,
+      ),
     get: <T>(path: string, init?: ApiRequestOptions) =>
-      request<T>(path, { ...init, method: "GET" }),
+      requestWithResponse<T>(path, { ...init, method: "GET" }).then(
+        ({ data }) => data,
+      ),
     post: <T>(path: string, body: unknown, init?: ApiRequestOptions) =>
-      request<T>(path, {
+      requestWithResponse<T>(path, {
+        ...init,
+        method: "POST",
+        body: JSON.stringify(body),
+      }).then(({ data }) => data),
+    postWithResponse: <T>(path: string, body: unknown, init?: ApiRequestOptions) =>
+      requestWithResponse<T>(path, {
         ...init,
         method: "POST",
         body: JSON.stringify(body),
       }),
     put: <T>(path: string, body: unknown, init?: ApiRequestOptions) =>
-      request<T>(path, {
+      requestWithResponse<T>(path, {
         ...init,
         method: "PUT",
         body: JSON.stringify(body),
-      }),
+      }).then(({ data }) => data),
   };
 }
 

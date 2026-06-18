@@ -1,6 +1,7 @@
 import { resolveDataSource } from "@/lib/api/data-source";
 import { getOrderConfirm } from "@/lib/api/orders";
 import type { OrderConfirmResponse } from "@/lib/api/types";
+import { getBackendSessionRequestInit } from "@/lib/auth-session";
 import {
   getCartData,
   mapApiCartToCartData,
@@ -44,7 +45,10 @@ function mapApiOrderConfirmToData(
 
 export function getOrderConfirmData(): Promise<OrderConfirmData> {
   return resolveDataSource<OrderConfirmData>({
-    api: async () => mapApiOrderConfirmToData(await getOrderConfirm()),
+    api: async () =>
+      mapApiOrderConfirmToData(
+        await getOrderConfirm(await getBackendSessionRequestInit()),
+      ),
     mock: async () => ({
       cart: await getCartData(),
       customer: mockCustomer,

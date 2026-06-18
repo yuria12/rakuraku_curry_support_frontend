@@ -6,6 +6,7 @@ import {
   updateCartItemQuantity as updateCartItemQuantityApi,
 } from "@/lib/api/cart";
 import type { AddCartItemRequest, ApiCart, ApiCartItem } from "@/lib/api/types";
+import { getBackendSessionRequestInit } from "@/lib/auth-session";
 import { mockCartItems } from "@/mocks/cart";
 import { mockProducts } from "@/mocks/products";
 import { mockToppings } from "@/mocks/toppings";
@@ -86,7 +87,8 @@ function getMockCartData(): CartData {
 
 export function getCartData(): Promise<CartData> {
   return resolveDataSource<CartData>({
-    api: async () => mapApiCartToCartData(await getCart()),
+    api: async () =>
+      mapApiCartToCartData(await getCart(await getBackendSessionRequestInit())),
     mock: getMockCartData,
   });
 }
@@ -145,7 +147,7 @@ function deleteMockCartItem(id: string) {
 export function addCartItem(request: AddCartItemRequest): Promise<void> {
   return resolveDataSource<void>({
     api: async () => {
-      await addCartItemApi(request);
+      await addCartItemApi(request, await getBackendSessionRequestInit());
     },
     mock: () => addMockCartItem(request),
   });
@@ -157,7 +159,11 @@ export function updateCartItemQuantity(
 ): Promise<void> {
   return resolveDataSource<void>({
     api: async () => {
-      await updateCartItemQuantityApi(id, { quantity });
+      await updateCartItemQuantityApi(
+        id,
+        { quantity },
+        await getBackendSessionRequestInit(),
+      );
     },
     mock: () => updateMockCartItemQuantity(id, quantity),
   });
@@ -166,7 +172,7 @@ export function updateCartItemQuantity(
 export function deleteCartItem(id: string): Promise<void> {
   return resolveDataSource<void>({
     api: async () => {
-      await deleteCartItemApi(id);
+      await deleteCartItemApi(id, await getBackendSessionRequestInit());
     },
     mock: () => deleteMockCartItem(id),
   });
