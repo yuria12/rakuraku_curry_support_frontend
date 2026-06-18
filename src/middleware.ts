@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { authTokenCookieName } from "@/lib/auth-constants";
+import { backendSessionCookieName } from "@/lib/auth-constants";
 
 const protectedRoutes = ["/account", "/orders", "/logout"];
 
@@ -14,9 +14,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const token = request.cookies.get(authTokenCookieName)?.value;
+  const sessionId = request.cookies.get(backendSessionCookieName)?.value;
 
-  if (token) {
+  if (sessionId) {
     return NextResponse.next();
   }
 

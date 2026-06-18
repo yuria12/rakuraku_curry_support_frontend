@@ -1,7 +1,10 @@
 import { resolveDataSource } from "@/lib/api/data-source";
 import { getCurrentUserProfile } from "@/lib/api/user";
 import type { ApiUser, ApiUserProfile } from "@/lib/api/types";
-import { requireAuth } from "@/lib/auth-session";
+import {
+  getBackendSessionRequestInit,
+  requireAuth,
+} from "@/lib/auth-session";
 
 export type UserProfileData = Readonly<{
   address: string;
@@ -49,7 +52,10 @@ export async function getUserProfileData(): Promise<UserProfileData> {
   const session = await requireAuth("/login?redirectTo=/account");
 
   return resolveDataSource<UserProfileData>({
-    api: async () => mapApiProfileToData(await getCurrentUserProfile(session.token)),
+    api: async () =>
+      mapApiProfileToData(
+        await getCurrentUserProfile(await getBackendSessionRequestInit()),
+      ),
     mock: () => mapSessionUserToData(session.user),
   });
 }

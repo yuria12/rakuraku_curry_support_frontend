@@ -96,7 +96,6 @@ export type LoginRequest = Readonly<{
 }>;
 
 export type LoginResponse = Readonly<{
-  token: string;
   user: ApiUser;
 }>;
 
