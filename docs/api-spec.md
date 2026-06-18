@@ -3,6 +3,13 @@
 カレーECサイトのフロントエンドで利用するAPI仕様メモです。  
 現時点の画面はモック表示を継続し、正式接続時は `src/lib/api` の関数を差し替え口として利用します。
 
+## 認証方式
+
+- 認証はCookieセッション方式を利用します。
+- ログイン成功時、APIサーバーは `Set-Cookie` ヘッダーで `JSESSIONID` を返します。
+- フロントエンドは受け取った `JSESSIONID` をHttpOnly Cookieとして保持し、認証が必要なAPIへ `Cookie: JSESSIONID={sessionId}` を送信します。
+- Bearer token方式は利用しません。
+
 ## エンドポイント
 
 | カテゴリ | メソッド | エンドポイント | 概要 | 認証 | 権限 |
@@ -36,7 +43,7 @@
 | --- | --- | --- | --- | --- | --- |
 | `POST /api/login` | body | `email` | string | 必須 | メールアドレス |
 | `POST /api/login` | body | `password` | string | 必須 | パスワード |
-| `POST /api/logout` | header | `Authorization` | string | 必須 | `Bearer {token}` |
+| `POST /api/logout` | header | `Cookie` | string | 必須 | `JSESSIONID={sessionId}` |
 | `POST /api/admin/login` | body | `email` | string | 必須 | 管理者メールアドレス |
 | `POST /api/admin/login` | body | `password` | string | 必須 | パスワード |
 | `POST /api/user-register` | body | `name` | string | 必須 | 氏名 |
@@ -77,7 +84,7 @@
 ### 認証
 
 - `POST /api/login`
-  - `token: string`
+  - response header: `Set-Cookie: JSESSIONID={sessionId}; Path=/; HttpOnly; SameSite=Lax`
   - `user.id: string`
   - `user.name: string`
   - `user.email: string`
@@ -85,7 +92,7 @@
 - `POST /api/logout`
   - `message: string`
 - `POST /api/admin/login`
-  - `token: string`
+  - response header: `Set-Cookie: JSESSIONID={sessionId}; Path=/; HttpOnly; SameSite=Lax`
   - `user.id: string`
   - `user.name: string`
   - `user.email: string`
@@ -216,6 +223,7 @@
 | 400 | `DELETE /api/admin/users/{id}` | 管理者アカウントは退会不可 |
 | 401 | `POST /api/login` | メールアドレスまたはパスワード不正 |
 | 401 | `POST /api/admin/login` | 管理者アカウントまたはパスワード不正 |
+| 401 | 認証が必要なAPI | `JSESSIONID` 不在、期限切れ、または無効なセッション |
 | 403 | `/api/admin/*` | 管理者権限なし |
 | 404 | `PUT /api/admin/users/{id}` | ユーザーが見つからない |
 | 404 | `DELETE /api/admin/users/{id}` | ユーザーが見つからない |
