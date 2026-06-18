@@ -24,11 +24,13 @@ export async function Header() {
         <nav className="app-nav" aria-label="メインナビゲーション">
           <NavLink href="/products">商品一覧</NavLink>
           <NavLink className="app-nav__cart-link" href="/cart">
-            <span className="app-nav__cart-icon" aria-hidden="true" />
-            <span>カート</span>
-            <span className="app-nav__cart-badge" aria-label={`${cartItemCount}件`}>
-              {cartItemCount}
+            <span className="app-nav__cart-icon-wrap">
+              <span className="app-nav__cart-icon" aria-hidden="true" />
+              <span className="app-nav__cart-badge" aria-label={`${cartItemCount}件`}>
+                {cartItemCount}
+              </span>
             </span>
+            <span>カート</span>
           </NavLink>
           {session.isLoggedIn ? (
             <HeaderUserMenu userName={userName} />
