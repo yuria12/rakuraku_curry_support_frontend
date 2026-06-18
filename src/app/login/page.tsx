@@ -1,7 +1,5 @@
-import { redirect } from "next/navigation";
 import { LoginForm } from "@/components/auth/LoginForm";
 import { Breadcrumb } from "@/components/common/Breadcrumb";
-import { getAuthSession } from "@/lib/auth-session";
 
 type LoginPageProps = Readonly<{
   searchParams?: Promise<{
@@ -47,16 +45,11 @@ function getRedirectPath(value?: string) {
 }
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
-  const session = await getAuthSession();
   const params = await searchParams;
   const redirectTo = getRedirectPath(params?.redirectTo);
   const errorMessage = getLoginErrorMessage(params?.error);
   const infoMessage = getLoginInfoMessage(redirectTo);
   const successMessage = getLoginSuccessMessage(params?.registered);
-
-  if (session.isLoggedIn) {
-    redirect(redirectTo);
-  }
 
   return (
     <section className="auth-page">

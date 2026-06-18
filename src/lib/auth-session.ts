@@ -17,7 +17,7 @@ export type AuthSession = Readonly<{
 }>;
 
 type AuthenticatedUser = Readonly<{
-  backendSessionId?: string;
+  backendSessionId: string;
   response: LoginResponse;
 }>;
 
@@ -27,13 +27,44 @@ function getMockLoginResponse(): LoginResponse {
   };
 }
 
-function getCookieValue(setCookieHeader: string | null, name: string) {
-  if (!setCookieHeader) {
-    return undefined;
+function splitSetCookieHeader(setCookieHeader: string) {
+  return setCookieHeader.split(/,(?=\s*[^;,=\s]+=[^;,]*)/).map((cookie) => cookie.trim());
+}
+
+function getSetCookieHeaders(headers: Headers) {
+  const getSetCookie = (headers as Headers & { getSetCookie?: () => string[] })
+    .getSetCookie;
+
+  if (typeof getSetCookie === "function") {
+    return getSetCookie.call(headers);
   }
 
-  const match = setCookieHeader.match(new RegExp(`(?:^|,\\s*)${name}=([^;]+)`));
-  return match?.[1];
+  const setCookieHeader = headers.get("set-cookie");
+
+  if (!setCookieHeader) {
+    return [];
+  }
+
+  return splitSetCookieHeader(setCookieHeader);
+}
+
+function getCookieValue(headers: Headers, name: string) {
+  for (const cookie of getSetCookieHeaders(headers)) {
+    const [cookiePair] = cookie.split(";");
+    const separatorIndex = cookiePair.indexOf("=");
+
+    if (separatorIndex < 0) {
+      continue;
+    }
+
+    const cookieName = cookiePair.slice(0, separatorIndex).trim();
+
+    if (cookieName === name) {
+      return cookiePair.slice(separatorIndex + 1);
+    }
+  }
+
+  return undefined;
 }
 
 function parseUserCookie(value?: string): ApiUser | undefined {
@@ -77,12 +108,17 @@ export async function authenticateUser(
   return resolveDataSource<AuthenticatedUser>({
     api: async () => {
       const { data, response } = await loginWithResponse({ email, password });
+      const backendSessionId = getCookieValue(
+        response.headers,
+        backendSessionCookieName,
+      );
+
+      if (!backendSessionId) {
+        throw new Error("ログインセッションを保存できませんでした。");
+      }
 
       return {
-        backendSessionId: getCookieValue(
-          response.headers.get("set-cookie"),
-          backendSessionCookieName,
-        ),
+        backendSessionId,
         response: data,
       };
     },
@@ -102,13 +138,11 @@ export async function authenticateUser(
 export async function saveAuthSession(authenticatedUser: AuthenticatedUser) {
   const cookieStore = await cookies();
 
-  if (authenticatedUser.backendSessionId) {
-    cookieStore.set(backendSessionCookieName, authenticatedUser.backendSessionId, {
-      httpOnly: true,
-      path: "/",
-      sameSite: "lax",
-    });
-  }
+  cookieStore.set(backendSessionCookieName, authenticatedUser.backendSessionId, {
+    httpOnly: true,
+    path: "/",
+    sameSite: "lax",
+  });
 
   cookieStore.set(authUserCookieName, JSON.stringify(authenticatedUser.response.user), {
     httpOnly: true,

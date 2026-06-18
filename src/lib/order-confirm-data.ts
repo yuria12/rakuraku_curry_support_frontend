@@ -7,6 +7,7 @@ import {
   mapApiCartToCartData,
   type CartData,
 } from "@/lib/cart-data";
+import { mockAuthSession } from "@/mocks/auth";
 
 export type OrderConfirmCustomer = Readonly<{
   address: string;
@@ -23,12 +24,12 @@ export type OrderConfirmData = Readonly<{
 }>;
 
 const mockCustomer: OrderConfirmCustomer = {
-  address: "",
-  email: "",
-  name: "",
+  address: mockAuthSession.user.address,
+  email: mockAuthSession.user.email,
+  name: mockAuthSession.user.name,
   paymentMethod: "creditCard",
-  phone: "",
-  postalCode: "",
+  phone: mockAuthSession.user.phone,
+  postalCode: mockAuthSession.user.postalCode,
 };
 
 function mapApiOrderConfirmToData(
