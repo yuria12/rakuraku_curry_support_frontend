@@ -35,6 +35,14 @@ src/
   types/                共通型定義の配置場所
 ```
 
+画面・server action・hooks・データ変換・共通コンポーネントの責務分担は `docs/application-structure-policy.md` を参照してください。
+
+## 開発方針メモ
+
+- `docs/application-structure-policy.md`: アプリ全体の構成見直し、hooks 化判断、共通化候補。
+- `docs/api-integration-policy.md`: API連携基盤、通信エラー、ローディング表示。
+- `docs/message-display-policy.md`: バリデーション、エラー、成功・確認メッセージ表示。
+
 ## 環境変数
 
 API 接続先は必要に応じて `.env.local` に設定します。

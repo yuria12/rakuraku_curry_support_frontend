@@ -1,0 +1,203 @@
+# アプリ全体の構成見直しメモ
+
+## 目的
+
+画面実装とAPI連携を優先して追加してきた処理を、保守性・再利用性・UXを基準に整理する。
+
+今後の実装では、このメモを判断基準として `page.tsx`、`actions.ts`、`lib`、`components`、hooks の責務を分ける。
+
+## ディレクトリと責務
+
+```text
+src/
+  app/                  ルーティング、ページ構成、server action、loading/error/not-found
+  components/
+    common/             複数画面で再利用するUI部品
+    layout/             Header、AppShell など画面共通レイアウト
+    auth/               認証画面のフォーム・表示部品
+    cart/               カート表示・カート行単位のUI
+    checkout/           注文確認の入力・確認UI
+    product/            商品一覧・商品詳細に閉じたUI
+  lib/
+    api/                API通信、API型、エンドポイント、通信エラー正規化
+    *-data.ts           API/モックから画面表示用データへの変換と取得
+    form-validation.ts  フォーム共通バリデーション
+    messages.ts         共通メッセージ定義
+  mocks/                モックデータ
+  types/                画面表示用の型
+```
+
+## `page.tsx` の責務
+
+- データ取得関数を呼び出す。
+- 画面全体のレイアウトを組み立てる。
+- `notFound()`、`redirect()` などルーティング都合の制御を行う。
+- UI部品に渡す props を最小限に整える。
+
+`page.tsx` に置かない処理:
+
+- APIレスポンスから画面表示用型への変換。
+- 入力フォームの状態管理。
+- ボタン押下中、行単位更新中などのクライアント状態。
+- 複数画面で使う計算処理やバリデーション。
+
+## `actions.ts` の責務
+
+server action は、サーバー側で完結させたい更新処理に使う。
+
+- ログイン、会員登録、ログアウト。
+- カート追加、数量更新、削除。
+- 注文確定など、セッションやサーバー状態を更新する処理。
+- 更新後の `revalidatePath()`、`redirect()`。
+
+server action に残してよい処理:
+
+- FormData の最低限の正規化。
+- サーバー送信前に必須となる安全側の検証。
+- API呼び出しと、成功後の再検証・遷移。
+
+server action に寄せすぎない処理:
+
+- 入力中に即時反映したいUI。
+- 処理中ボタン表示、対象行だけの pending 表示。
+- フォーム項目ごとのエラー消去。
+- 商品詳細のサイズ・トッピング・数量変更に伴う合計金額再計算。
+
+## `lib` の責務
+
+`src/lib/api` は API 境界、`src/lib/*-data.ts` は画面表示用データ境界として扱う。
+
+- API通信は `src/lib/api/*` に閉じる。
+- APIレスポンス型は `src/lib/api/types.ts` に置く。
+- 画面表示用型は `src/types/*` に置く。
+- APIレスポンス型から画面表示用型への変換は `src/lib/*-data.ts` に置く。
+- `page.tsx` やコンポーネントで APIレスポンス型を直接扱わない。
+
+現状の整理対象:
+
+- `mapApiCartItemToCartItem` と `mapApiItemToOrderHistoryItem` は商品・トッピングの変換が似ているため、後続で共通mapper化を検討する。
+- `getSelectedSize()` が cart/order で重複しているため、APIサイズ値の正規化関数として共通化を検討する。
+- `src/lib/form-validation.ts` と `src/lib/messages.ts` に近いメッセージ定義があるため、フォーム検証用文言の集約方針を決める。
+
+## hooks 化の判断
+
+hooks 化する処理:
+
+- 複数フォームで共通する `errors` state、`clearError()`、`validate()`。
+- `useTransition()` を使ったボタン単位・行単位の pending 管理。
+- カート数量変更・削除の楽観的UI更新。
+- 商品詳細のサイズ・トッピング・数量から合計金額を計算する状態管理。
+- URL query と入力値を同期する検索・絞り込み。
+
+hooks 化しない処理:
+
+- 1画面だけで、 JSX の近くにあった方が読みやすい単純な表示分岐。
+- サーバー側データ取得だけで完結する処理。
+- `redirect()` や `revalidatePath()` が主目的の server action。
+- まだ再利用先がない小さな計算処理。
+
+候補:
+
+- `useFormErrors`：フォームごとのエラー保持、部分クリア、submit時検証の補助。
+- `usePendingAction`：submit中のボタン文言・disabled制御。
+- `useCartItemActions`：数量変更・削除の対象行 pending、楽観的更新。
+- `useProductSelection`：商品詳細のサイズ・トッピング・数量・合計金額。
+
+## クライアント側状態管理の方針
+
+クライアントコンポーネント化する箇所:
+
+- 入力中にバリデーション結果を見せたいフォーム。
+- 選択内容に応じて価格や表示が即時に変わるUI。
+- 開閉状態を持つメニュー。
+- ボタン押下中や対象行更新中の表示が必要な操作。
+
+サーバーコンポーネントのままでよい箇所:
+
+- 初回表示用の一覧・詳細・履歴取得。
+- 表示専用の確認画面。
+- セッション状態を元にした初期表示。
+- SEOや静的生成に寄せたい商品詳細など。
+
+## ローディング表示方針
+
+詳細は `docs/api-integration-policy.md` を参照する。
+
+- 初回取得は `app/**/loading.tsx` で、該当ページ領域に表示する。
+- 画面全体を止める必要がない操作は、対象ボタン・対象行だけ pending 表示にする。
+- カート数量変更・削除は、ページ全体のローディングではなく行単位で更新中を示す。
+- 文言は「読み込んでいます」「更新しています」「削除しています」のように操作単位で統一する。
+
+## エラー表示方針
+
+詳細は `docs/message-display-policy.md` を参照する。
+
+- 入力欄単位のエラーは `FieldError` または入力コンポーネントの `errorMessage` に寄せる。
+- フォーム全体・処理結果は `Message` を使う。
+- API通信失敗や想定外エラーは共通文言に置き換える。
+- APIから返る業務エラー文言を表示する場合も、表示場所は画面側で統一する。
+
+## 成功・確認メッセージ方針
+
+- 完了後に別ページへ遷移する処理は、遷移先で成功メッセージを表示する。
+- 同一画面に留まる処理は、対象フォーム上部または対象行付近に成功メッセージを表示する。
+- 取り消しが難しい操作は、確認画面または確認ダイアログを挟む。
+- カート削除は後続で確認表示、または削除後に戻せる導線を検討する。
+
+## フォーム入力状態管理の共通化
+
+現状は `LoginForm`、`RegisterForm`、`OrderConfirmForm`、`ProductDetailForm` がそれぞれ `useState` で errors を持っている。
+
+後続で共通化する場合は、まず以下を `useFormErrors` として切り出す。
+
+- errors state。
+- `clearError(field)`。
+- `setFieldError(field, message)`。
+- `setErrors(nextErrors)`。
+- `hasErrors()` の呼び出し。
+
+フォーム固有の検証ルールは各フォームに残し、状態操作だけを共通化する。
+
+## カート操作後のUX改善
+
+優先して改善する箇所:
+
+- 数量変更中は対象ステッパーだけ disabled / pending 表示にする。
+- 削除中は対象行だけ disabled / pending 表示にする。
+- 更新成功後に合計金額が変わったことを自然に認識できる表示にする。
+- 失敗時は対象行付近にエラーを表示し、元の数量を維持する。
+
+実装方針:
+
+- server action は維持しつつ、クライアント側で `useTransition()` を使う。
+- 即時反映が必要になった段階で `CartItemSummary` をクライアントコンポーネント化する。
+- 複数画面でカート操作を使う場合は `useCartItemActions` に切り出す。
+
+## 共通コンポーネントの粒度
+
+残す:
+
+- `Header`: 共通ヘッダーとして利用継続。
+- `HeaderUserMenu`: クリック開閉の状態を持つため `Header` から分離する。
+- `SearchBox`: ラベル、入力、検索/クリア導線をまとめており、他画面にも展開しやすい。
+- `PageContainer`: 現在は商品一覧とアカウントで利用しているため、ページ外枠の共通部品として残す。
+- `Card`: 現在は商品カードとアカウント情報で利用しているため、汎用カードとして残す。
+
+削除:
+
+- `AuthNavLink`: `Header` 側でログイン/ユーザーメニューを制御しており未使用のため削除済み。
+
+見直し候補:
+
+- `Card` が見た目だけの薄いラッパーに留まる場合は、今後の利用箇所を見て削除を再検討する。
+- `PageContainer` の利用が増えない場合は、ページ側の `section className="page-container ..."` に戻す。
+- 商品専用の見た目が強くなった場合、`ProductCard` 内は専用divへ戻す。
+
+## 今後の追加実装時の判断順
+
+1. API境界の処理か、画面表示用の処理かを分ける。
+2. 画面表示用型への変換は `lib/*-data.ts` に置く。
+3. 初回表示だけなら server component に寄せる。
+4. 即時反映・入力中検証・pending 表示が必要なら client component / hooks を検討する。
+5. 2画面以上で使う処理だけ共通化する。
+6. メッセージ表示は `Message` / `FieldError` / 入力コンポーネントの `errorMessage` に寄せる。
