@@ -146,9 +146,6 @@ export function ProductDetailForm({
       </div>
 
       <div className="product-detail__checkout">
-        <p className="detail-note">
-          ※ カート投入後の正式な金額はDB価格を使用します
-        </p>
         <p className="detail-total">
           合計金額 ¥{totalPrice.toLocaleString()}
         </p>

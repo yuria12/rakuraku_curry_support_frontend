@@ -3,6 +3,8 @@ import { resolveDataSource } from "@/lib/api/data-source";
 import { getOrderById, getOrders } from "@/lib/api/orders";
 import type { ApiCartItem, ApiOrder } from "@/lib/api/types";
 import { getBackendSessionRequestInit } from "@/lib/auth-session";
+import { getCartItemDisplaySubtotal } from "@/lib/cart-display-pricing";
+import { mapApiCartItemToCartItem } from "@/lib/cart-item-mappers";
 import { mockOrders } from "@/mocks/orders";
 import type { OrderHistory, OrderHistoryItem } from "@/types/order";
 
@@ -16,38 +18,15 @@ const defaultCustomer = {
   postalCode: "",
 };
 
-function getSelectedSize(size: ApiCartItem["size"]): OrderHistoryItem["size"] {
-  return size === "L" ? "L" : "M";
-}
-
 function mapApiItemToOrderHistoryItem(
   item: ApiCartItem,
   index: number,
 ): OrderHistoryItem {
-  const size = getSelectedSize(item.size);
-  const toppingTotal = item.toppings.reduce((total, topping) => {
-    return total + topping.price;
-  }, 0);
+  const cartItem = mapApiCartItemToCartItem(item, index);
 
   return {
-    id: item.id ?? `${item.productId}-${size}-${index}`,
-    product: {
-      description: "",
-      id: item.productId,
-      imagePath: item.imagePath,
-      name: item.name,
-      priceL: item.price,
-      priceM: item.price,
-    },
-    quantity: item.quantity,
-    size,
-    subtotal: (item.price + toppingTotal) * item.quantity,
-    toppings: item.toppings.map((topping) => ({
-      id: topping.id,
-      name: topping.name,
-      priceL: topping.price,
-      priceM: topping.price,
-    })),
+    ...cartItem,
+    subtotal: getCartItemDisplaySubtotal(cartItem),
   };
 }
 

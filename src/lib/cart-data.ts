@@ -5,8 +5,10 @@ import {
   getCart,
   updateCartItemQuantity as updateCartItemQuantityApi,
 } from "@/lib/api/cart";
-import type { AddCartItemRequest, ApiCart, ApiCartItem } from "@/lib/api/types";
+import type { AddCartItemRequest, ApiCart } from "@/lib/api/types";
 import { getBackendSessionRequestInit } from "@/lib/auth-session";
+import { getCartItemDisplaySubtotal } from "@/lib/cart-display-pricing";
+import { mapApiCartItemToCartItem } from "@/lib/cart-item-mappers";
 import { mockCartItems } from "@/mocks/cart";
 import { mockProducts } from "@/mocks/products";
 import { mockToppings } from "@/mocks/toppings";
@@ -21,37 +23,6 @@ export type CartData = Readonly<{
 
 const mockShippingFee = 500;
 
-function getSelectedSize(size: ApiCartItem["size"]): CartItem["size"] {
-  return size === "L" ? "L" : "M";
-}
-
-function mapApiCartItemToCartItem(
-  item: ApiCartItem,
-  index: number,
-): CartItem {
-  const size = getSelectedSize(item.size);
-
-  return {
-    id: item.id ?? `${item.productId}-${size}-${index}`,
-    product: {
-      description: "",
-      id: item.productId,
-      imagePath: item.imagePath,
-      name: item.name,
-      priceL: item.price,
-      priceM: item.price,
-    },
-    quantity: item.quantity,
-    size,
-    toppings: item.toppings.map((topping) => ({
-      id: topping.id,
-      name: topping.name,
-      priceL: topping.price,
-      priceM: topping.price,
-    })),
-  };
-}
-
 export function mapApiCartToCartData(cart: ApiCart): CartData {
   return {
     items: cart.items.map(mapApiCartItemToCartItem),
@@ -61,19 +32,9 @@ export function mapApiCartToCartData(cart: ApiCart): CartData {
   };
 }
 
-function getCartItemSubtotal(item: CartItem) {
-  const productPrice =
-    item.size === "M" ? item.product.priceM : item.product.priceL;
-  const toppingTotal = item.toppings.reduce((total, topping) => {
-    return total + (item.size === "M" ? topping.priceM : topping.priceL);
-  }, 0);
-
-  return (productPrice + toppingTotal) * item.quantity;
-}
-
 function getMockCartData(): CartData {
   const productsTotal = mockCartItems.reduce(
-    (total, item) => total + getCartItemSubtotal(item),
+    (total, item) => total + getCartItemDisplaySubtotal(item),
     0,
   );
 

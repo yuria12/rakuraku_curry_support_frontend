@@ -34,3 +34,4 @@
 - 入力欄下のエラーは `FieldError` を使う。
 - フォーム上部や処理結果のメッセージは `Message` を使う。
 - APIレスポンスの `message` をそのまま表示するかはAPI連携時に再検討する。
+- フォーム状態管理や hooks 化の判断は `docs/application-structure-policy.md` も参照する。

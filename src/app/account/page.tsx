@@ -29,10 +29,6 @@ export default async function AccountPage() {
           <p className="account-page__eyebrow">Account</p>
           <h1>登録情報</h1>
         </div>
-        <div className="account-page__edit-status" aria-live="polite">
-          <span className="account-page__edit-status-dot" aria-hidden="true" />
-          現在は閲覧のみ利用できます
-        </div>
       </div>
 
       <Card className="account-profile-card">
