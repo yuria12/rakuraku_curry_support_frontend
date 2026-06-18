@@ -1,5 +1,9 @@
 import { ProductImage } from "@/components/common/ProductImage";
 import { QuantityStepper } from "@/components/common/QuantityStepper";
+import {
+  getCartItemDisplayPrice,
+  getCartItemDisplaySubtotal,
+} from "@/lib/cart-display-pricing";
 import type { CartItem } from "@/types/cart";
 
 type CartItemSummaryProps = Readonly<{
@@ -9,25 +13,6 @@ type CartItemSummaryProps = Readonly<{
   showActions?: boolean;
   updateQuantityAction?: (formData: FormData) => void | Promise<void>;
 }>;
-
-export function getCartItemPrice(item: CartItem) {
-  return item.size === "M" ? item.product.priceM : item.product.priceL;
-}
-
-export function getCartToppingPrice(
-  item: CartItem,
-  topping: CartItem["toppings"][number],
-) {
-  return item.size === "M" ? topping.priceM : topping.priceL;
-}
-
-export function getCartItemSubtotal(item: CartItem) {
-  const toppingTotal = item.toppings.reduce((total, topping) => {
-    return total + getCartToppingPrice(item, topping);
-  }, 0);
-
-  return (getCartItemPrice(item) + toppingTotal) * item.quantity;
-}
 
 export function CartItemSummary({
   deleteAction,
@@ -57,7 +42,7 @@ export function CartItemSummary({
         <dl className="cart-item-summary__breakdown">
           <div>
             <dt>サイズ：{item.size}</dt>
-            <dd>¥{getCartItemPrice(item).toLocaleString()}</dd>
+            <dd>¥{getCartItemDisplayPrice(item).toLocaleString()}</dd>
           </div>
           <div className="cart-item-summary__breakdown-row--full">
             <dt>トッピング：{toppingNames}</dt>
@@ -111,7 +96,7 @@ export function CartItemSummary({
           <p className="cart-item-summary__count">個数：{item.quantity}個</p>
         )}
         <p className="cart-item-summary__total">
-          合計　¥{getCartItemSubtotal(item).toLocaleString()}
+          合計　¥{getCartItemDisplaySubtotal(item).toLocaleString()}
         </p>
       </div>
     </article>

@@ -1,21 +1,12 @@
 export const validationMessages = {
-  required: "入力してください。",
-  email: "メールアドレスの形式で入力してください。",
-  phone: "電話番号の形式で入力してください。",
-  postalCode: "郵便番号の形式で入力してください。",
-  passwordLength: "パスワードは8文字以上で入力してください。",
-  passwordMismatch: "パスワードが一致していません。",
-  dateRequired: "日付を選択してください。",
-  timeRequired: "時間を選択してください。",
-  quantityMin: "数量は1個以上を選択してください。",
-} as const;
-
-export const formMessages = {
-  invalidInput: "入力内容を確認してください。",
-  submitFailed: "処理に失敗しました。時間をおいて再度お試しください。",
-} as const;
-
-export const resultMessages = {
-  orderComplete: "注文が完了しました。",
-  logoutComplete: "ログアウトしました。",
+  deliveryDateRequired: "お届け日を選択してください",
+  deliveryTimeRequired: "お届け時間を選択してください",
+  emailFormat: "メールアドレスの形式が不正です",
+  passwordLength: "パスワードは８文字以上１６文字以内で設定してください",
+  passwordMismatch: "パスワードと確認用パスワードが不一致です",
+  passwordPolicy: "パスワードは英大文字・英小文字・数字を各1文字以上含めてください",
+  paymentRequired: "支払方法を選択してください",
+  phoneFormat: "電話番号はXXXX-XXXX-XXXXの形式で入力してください",
+  postalCodeFormat: "郵便番号はXXX-XXXXの形式で入力してください",
+  quantityRequired: "数量を選択してください",
 } as const;

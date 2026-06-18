@@ -75,9 +75,10 @@ server action に寄せすぎない処理:
 
 現状の整理対象:
 
-- `mapApiCartItemToCartItem` と `mapApiItemToOrderHistoryItem` は商品・トッピングの変換が似ているため、後続で共通mapper化を検討する。
-- `getSelectedSize()` が cart/order で重複しているため、APIサイズ値の正規化関数として共通化を検討する。
-- `src/lib/form-validation.ts` と `src/lib/messages.ts` に近いメッセージ定義があるため、フォーム検証用文言の集約方針を決める。
+- APIカート行から画面表示用カート行への変換は `src/lib/cart-item-mappers.ts` に集約する。
+- カート商品の表示補助用の価格・小計計算は `src/lib/cart-display-pricing.ts` に集約する。
+- 注文確定・請求に使う金額の正はバックエンドのレスポンスとし、フロント側の計算結果を信頼しない。
+- フォーム検証用文言は `src/lib/messages.ts` に集約し、検証関数は `src/lib/form-validation.ts` に置く。
 
 ## hooks 化の判断
 
